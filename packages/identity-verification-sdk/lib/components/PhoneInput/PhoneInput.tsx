@@ -23,7 +23,6 @@ export const PhoneInput = ({
         },
     });
 
-    console.log(errors?.phoneNumber);
     return (
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
             <div className='flex gap-2'>
@@ -36,17 +35,12 @@ export const PhoneInput = ({
                     type='tel'
                     inputMode='tel'
                     autoComplete='tel-national'
-                    // TO DO -- Maybe use label instead of aria-label
                     aria-label='Phone number'
-                    // TO DO -- Prevent from entering non-numeric values
                     pattern='[0-9]*'
                     maxLength={15}
                 />
             </div>
-            <button
-                type='submit'
-                className='sr-only'
-                aria-label='Submit'>
+            <button type='submit' className='sr-only' aria-label='Submit'>
                 Submit
             </button>
         </form>
@@ -56,7 +50,6 @@ export const PhoneInput = ({
 const Options = () => {
     const countries = getCountryData();
 
-    // TO DO -- Add validation for phone number, probably by using Zod and libphonenumber & parsePhoneNumberFromString
     return countries.map(({code, dialCode, flag}) => {
         return (
             <option

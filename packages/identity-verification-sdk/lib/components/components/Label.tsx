@@ -1,5 +1,4 @@
 import {forwardRef, type LabelHTMLAttributes, type ReactNode} from 'react';
-// TO DO -- check type import
 import clsx from 'clsx';
 
 export const Label = forwardRef<HTMLLabelElement, LabelProps>(

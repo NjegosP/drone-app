@@ -8,9 +8,6 @@ import {Input, Label, Select, ValidationError} from '../components';
 import {addressFormSchema} from './schema';
 import type {AddressFormType} from './types';
 
-// TO DO -- autocomplete html attribute
-// TO DO -- VanillaJS forms, validation etc.
-
 export const AddressForm = ({
     onSubmit,
 }: {
@@ -22,7 +19,6 @@ export const AddressForm = ({
         formState: {errors},
     } = useForm<AddressFormType>({
         resolver: zodResolver(addressFormSchema),
-        // TO DO -- potentially add default values
     });
 
     return (
