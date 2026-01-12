@@ -1,0 +1,15 @@
+# This file defines code ownership for the repository
+# Each line is a file pattern followed by one or more owners
+# Owners will be automatically requested for review when someone opens a pull request
+
+# Global ownership - you own everything by default
+* @NjegosP
+
+# Package-specific ownership (optional - uncomment to specify different owners)
+# /packages/drone-rental-app/ @NjegosP
+# /packages/identity-verification-sdk/ @NjegosP
+
+# Configuration files
+/.github/ @NjegosP
+package.json @NjegosP
+package-lock.json @NjegosP
