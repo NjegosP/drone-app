@@ -62,7 +62,7 @@ export const BrowsePage = () => {
                         </div>
                     </div>
 
-                    <div className='lg:col-span-1'>
+                    <div className='hidden lg:block lg:col-span-1'>
                         <div className='sticky top-24'>
                             <Cart />
                         </div>

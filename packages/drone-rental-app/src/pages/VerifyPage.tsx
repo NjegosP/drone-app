@@ -42,16 +42,16 @@ export const VerifyPage = () => {
 
     console.log(address);
 
-    const handleAddressSubmit = async (address: Address) => {
-        console.log(address);
-        setAddress(address);
+    const handleAddressSubmit = async (data: Address) => {
+        console.log(data);
+        setAddress(data);
         setIsLoading(true);
 
         try {
             const verificationResult = await getIdentityData({
                 selfieUrl: selfieUrl!,
                 phone: phone!,
-                address,
+                address: data,
             });
 
             setVerificationData(verificationResult);

@@ -94,11 +94,11 @@ export const ResultPage = () => {
                                 Address
                             </h3>
                             <div className='text-sm text-gray-700'>
-                                <p>{verificationData.address.street}</p>
+                                <p>{verificationData.address.streetAddress}</p>
                                 <p>
                                     {verificationData.address.city},{' '}
-                                    {verificationData.address.state}{' '}
-                                    {verificationData.address.postalCode}
+                                    {verificationData.address.stateProvince}{' '}
+                                    {verificationData.address.zipCode}
                                 </p>
                                 <p>{verificationData.address.country}</p>
                             </div>
