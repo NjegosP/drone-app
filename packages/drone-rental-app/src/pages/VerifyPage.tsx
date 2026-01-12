@@ -6,11 +6,14 @@ import {
     type Address,
 } from 'identity-verification-sdk';
 import {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {Header} from '../components/Header';
 import {useStore} from '../store/useStore';
 
 type VerificationStep = 'selfie' | 'phone' | 'address';
 
 export const VerifyPage = () => {
+    const navigate = useNavigate();
     const [currentVerifyStep, setCurrentVerifyStep] =
         useState<VerificationStep>('selfie');
     const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +26,6 @@ export const VerifyPage = () => {
         setPhone,
         setAddress,
         setVerificationData,
-        setCurrentStep,
     } = useStore();
 
     const handleSelfieCapture = (imageData: string) => {
@@ -53,7 +55,7 @@ export const VerifyPage = () => {
             });
 
             setVerificationData(verificationResult);
-            setCurrentStep('result');
+            navigate('/result');
         } catch (error) {
             console.error('Verification error:', error);
         } finally {
@@ -63,16 +65,10 @@ export const VerifyPage = () => {
 
     return (
         <div className='min-h-screen bg-white'>
-            <header className='border-b border-amber-200 bg-white sticky top-0 z-10'>
-                <div className='max-w-7xl mx-auto px-6 py-4'>
-                    <h1 className='text-2xl font-bold'>
-                        Identity Verification
-                    </h1>
-                    <p className='text-sm text-gray-600'>
-                        Complete verification to proceed with checkout
-                    </p>
-                </div>
-            </header>
+            <Header
+                title='Identity Verification'
+                subtitle='Complete verification to proceed with checkout'
+            />
 
             <div className='max-w-3xl mx-auto px-6 py-8'>
                 <div className='mb-8'>

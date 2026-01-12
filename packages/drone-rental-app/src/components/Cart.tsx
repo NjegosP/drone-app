@@ -1,7 +1,9 @@
+import {useNavigate} from 'react-router-dom';
 import {useStore} from '../store/useStore';
 
 export const Cart = () => {
-    const {cart, removeFromCart, setCurrentStep} = useStore();
+    const navigate = useNavigate();
+    const {cart, removeFromCart} = useStore();
 
     const total = cart.reduce(
         (sum, item) => sum + item.drone.dailyPrice * item.days,
@@ -53,7 +55,7 @@ export const Cart = () => {
                     <span className='font-semibold text-lg'>${total}</span>
                 </div>
                 <button
-                    onClick={() => setCurrentStep('verify')}
+                    onClick={() => navigate('/verify')}
                     className='w-full py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium'>
                     Proceed to Verification
                 </button>

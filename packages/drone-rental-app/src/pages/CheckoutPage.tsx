@@ -1,7 +1,10 @@
 import {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {Header} from '../components/Header';
 import {useStore} from '../store/useStore';
 
 export const CheckoutPage = () => {
+    const navigate = useNavigate();
     const {cart, verificationData, clearCart, resetVerification} = useStore();
     const [isCompleted, setIsCompleted] = useState(false);
 
@@ -17,18 +20,13 @@ export const CheckoutPage = () => {
     const handleStartOver = () => {
         clearCart();
         resetVerification();
+        navigate('/browse');
     };
 
     if (isCompleted) {
         return (
             <div className='min-h-screen bg-white'>
-                <header className='border-b border-amber-200 bg-white sticky top-0 z-10'>
-                    <div className='max-w-7xl mx-auto px-6 py-4'>
-                        <h1 className='text-2xl font-bold'>
-                            Rental Confirmed
-                        </h1>
-                    </div>
-                </header>
+                <Header title='Rental Confirmed' />
 
                 <div className='max-w-3xl mx-auto px-6 py-8'>
                     <div className='border border-amber-200 rounded-lg p-6 text-center'>
@@ -70,11 +68,7 @@ export const CheckoutPage = () => {
 
     return (
         <div className='min-h-screen bg-white'>
-            <header className='border-b border-amber-200 bg-white sticky top-0 z-10'>
-                <div className='max-w-7xl mx-auto px-6 py-4'>
-                    <h1 className='text-2xl font-bold'>Checkout</h1>
-                </div>
-            </header>
+            <Header title='Checkout' />
 
             <div className='max-w-3xl mx-auto px-6 py-8'>
                 <div className='space-y-6'>

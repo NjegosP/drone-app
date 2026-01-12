@@ -1,7 +1,10 @@
+import {useNavigate} from 'react-router-dom';
+import {Header} from '../components/Header';
 import {useStore} from '../store/useStore';
 
 export const ResultPage = () => {
-    const {verificationData, setCurrentStep, resetVerification} = useStore();
+    const navigate = useNavigate();
+    const {verificationData, resetVerification} = useStore();
 
     if (!verificationData) {
         return null;
@@ -13,11 +16,7 @@ export const ResultPage = () => {
 
     return (
         <div className='min-h-screen bg-white'>
-            <header className='border-b border-amber-200 bg-white sticky top-0 z-10'>
-                <div className='max-w-7xl mx-auto px-6 py-4'>
-                    <h1 className='text-2xl font-bold'>Verification Result</h1>
-                </div>
-            </header>
+            <Header title='Verification Result' />
 
             <div className='max-w-3xl mx-auto px-6 py-8'>
                 <div className='border border-amber-200 rounded-lg p-6'>
@@ -109,19 +108,22 @@ export const ResultPage = () => {
                     <div className='flex gap-4'>
                         {isVerified ? (
                             <button
-                                onClick={() => setCurrentStep('checkout')}
+                                onClick={() => navigate('/checkout')}
                                 className='flex-1 py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium'>
                                 Proceed to Checkout
                             </button>
                         ) : (
                             <>
                                 <button
-                                    onClick={() => setCurrentStep('verify')}
+                                    onClick={() => navigate('/verify')}
                                     className='flex-1 py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium'>
                                     Retry Verification
                                 </button>
                                 <button
-                                    onClick={() => resetVerification()}
+                                    onClick={() => {
+                                        resetVerification();
+                                        navigate('/browse');
+                                    }}
                                     className='flex-1 py-2 border border-amber-200 rounded-md hover:bg-gray-50 transition-colors font-medium'>
                                     Cancel
                                 </button>

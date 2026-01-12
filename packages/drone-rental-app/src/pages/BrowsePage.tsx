@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import {Header} from '../components/Header';
 import {DroneCard} from '../components/DroneCard';
 import {Cart} from '../components/Cart';
 import {drones} from '../data/drones';
@@ -20,14 +21,7 @@ export const BrowsePage = () => {
 
     return (
         <div className='min-h-screen bg-white'>
-            <header className='border-b border-amber-200 bg-white sticky top-0 z-10'>
-                <div className='max-w-7xl mx-auto px-6 py-4'>
-                    <h1 className='text-2xl font-bold'>SkyRent Drones</h1>
-                    <p className='text-sm text-gray-600'>
-                        Premium drone rentals for filming and cargo
-                    </p>
-                </div>
-            </header>
+            <Header subtitle='Premium drone rentals for filming and cargo' />
 
             <div className='max-w-7xl mx-auto px-6 py-8'>
                 <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
