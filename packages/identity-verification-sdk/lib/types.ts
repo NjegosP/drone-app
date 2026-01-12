@@ -1,9 +1,9 @@
 export interface Address {
-    street: string;
+    streetAddress: string;
     city: string;
-    state: string;
+    stateProvince: string;
     country: string;
-    postalCode: string;
+    zipCode: string;
 }
 
 export interface IdentityData {
