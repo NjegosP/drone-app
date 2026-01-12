@@ -1,5 +1,5 @@
 import {create} from 'zustand';
-import type {CartItem, IdentityData} from '../types';
+import type {CartItem, IdentityData, Address} from '../types';
 
 type Store = {
     cart: CartItem[];
@@ -7,7 +7,7 @@ type Store = {
     currentStep: 'browse' | 'verify' | 'result' | 'checkout';
     selfieUrl: string | null;
     phone: string | null;
-    address: any | null;
+    address: Address | null;
     addToCart: (item: CartItem) => void;
     removeFromCart: (droneId: string) => void;
     updateCartItemDays: (droneId: string, days: number) => void;
@@ -17,7 +17,7 @@ type Store = {
     resetVerification: () => void;
     setSelfieUrl: (url: string) => void;
     setPhone: (phone: string) => void;
-    setAddress: (address: any) => void;
+    setAddress: (address: Address) => void;
 };
 
 export const useStore = create<Store>((set) => ({
