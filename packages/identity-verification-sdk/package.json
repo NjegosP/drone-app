@@ -1,0 +1,43 @@
+{
+  "name": "identity-verification-sdk",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+
+  "files": ["dist"],
+
+  "scripts": {
+    "build": "tsup lib/index.ts --format esm --dts --out-dir dist",
+    "dev": "tsup lib/index.ts --format esm --dts --out-dir dist --watch",
+    "lint": "eslint .",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19",  
+    "react-hook-form": "^7.71.0",  
+    "react-webcam": "^7.2.0"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "clsx": "^2.1.1",
+    "country-flag-icons": "^1.6.4",
+    "libphonenumber-js": "^1.12.33",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "~5.9.3",
+    "tsup": "^8.0.2",
+    "vitest": "^4.0.16"
+  }
+}
