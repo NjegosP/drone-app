@@ -1,13 +1,12 @@
-import {useNavigate} from 'react-router-dom';
+import {Link, Navigate} from 'react-router';
 import {Header} from '../components/Header';
 import {useStore} from '../store/useStore';
 
 export const Result = () => {
-    const navigate = useNavigate();
     const {verificationData, resetVerification} = useStore();
 
     if (!verificationData) {
-        return null;
+        return <Navigate to='/browse' replace />;
     }
 
     console.log(verificationData);
@@ -107,26 +106,24 @@ export const Result = () => {
 
                     <div className='flex gap-4'>
                         {isVerified ? (
-                            <button
-                                onClick={() => navigate('/checkout')}
-                                className='flex-1 py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium'>
+                            <Link
+                                to='/checkout'
+                                className='flex-1 py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium text-center'>
                                 Proceed to Checkout
-                            </button>
+                            </Link>
                         ) : (
                             <>
-                                <button
-                                    onClick={() => navigate('/verify')}
-                                    className='flex-1 py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium'>
+                                <Link
+                                    to='/verify'
+                                    className='flex-1 py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium text-center'>
                                     Retry Verification
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        resetVerification();
-                                        navigate('/browse');
-                                    }}
-                                    className='flex-1 py-2 border border-amber-200 rounded-md hover:bg-gray-50 transition-colors font-medium'>
+                                </Link>
+                                <Link
+                                    to='/browse'
+                                    onClick={resetVerification}
+                                    className='flex-1 py-2 border border-amber-200 rounded-md hover:bg-gray-50 transition-colors font-medium text-center'>
                                     Cancel
-                                </button>
+                                </Link>
                             </>
                         )}
                     </div>

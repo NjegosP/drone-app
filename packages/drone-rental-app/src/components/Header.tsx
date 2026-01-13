@@ -1,5 +1,5 @@
 import {useRef, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {Link} from 'react-router';
 import {useStore} from '../store/useStore';
 import {Cart} from './Cart';
 
@@ -9,7 +9,6 @@ type HeaderProps = {
 };
 
 export const Header = ({title = 'SkyRent Drones', subtitle}: HeaderProps) => {
-    const navigate = useNavigate();
     const {cart} = useStore();
     const [isCartOpen, setIsCartOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -20,14 +19,12 @@ export const Header = ({title = 'SkyRent Drones', subtitle}: HeaderProps) => {
         <header className='border-b border-amber-200 bg-white sticky top-0 z-10'>
             <div className='max-w-7xl mx-auto px-6 py-4'>
                 <div className='flex items-center justify-between'>
-                    <div
-                        onClick={() => navigate('/browse')}
-                        className='cursor-pointer'>
+                    <Link to='/browse' className='cursor-pointer'>
                         <h1 className='text-2xl font-bold'>{title}</h1>
                         {subtitle && (
                             <p className='text-sm text-gray-600'>{subtitle}</p>
                         )}
-                    </div>
+                    </Link>
 
                     <div className='lg:hidden relative' ref={dropdownRef}>
                         <button

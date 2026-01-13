@@ -1,10 +1,9 @@
 import {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {Link, Navigate} from 'react-router';
 import {Header} from '../components/Header';
 import {useStore} from '../store/useStore';
 
 export const Checkout = () => {
-    const navigate = useNavigate();
     const {cart, verificationData, clearCart, resetVerification} = useStore();
     const [isCompleted, setIsCompleted] = useState(false);
 
@@ -20,7 +19,6 @@ export const Checkout = () => {
     const handleStartOver = () => {
         clearCart();
         resetVerification();
-        navigate('/browse');
     };
 
     if (isCompleted) {
@@ -51,11 +49,12 @@ export const Checkout = () => {
                             Your drone rental has been successfully completed.
                             Check your email for confirmation details.
                         </p>
-                        <button
+                        <Link
+                            to='/browse'
                             onClick={handleStartOver}
-                            className='py-2 px-6 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium'>
+                            className='inline-block py-2 px-6 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium'>
                             Browse More Drones
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -63,7 +62,7 @@ export const Checkout = () => {
     }
 
     if (!verificationData || cart.length === 0) {
-        return null;
+        return <Navigate to='/browse' replace />;
     }
 
     return (

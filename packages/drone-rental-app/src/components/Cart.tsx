@@ -1,8 +1,7 @@
-import {useNavigate} from 'react-router-dom';
+import {Link} from 'react-router';
 import {useStore} from '../store/useStore';
 
 export const Cart = () => {
-    const navigate = useNavigate();
     const {cart, removeFromCart} = useStore();
 
     const total = cart.reduce(
@@ -54,11 +53,11 @@ export const Cart = () => {
                     <span className='font-semibold'>Total:</span>
                     <span className='font-semibold text-lg'>${total}</span>
                 </div>
-                <button
-                    onClick={() => navigate('/verify')}
-                    className='w-full py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium'>
+                <Link
+                    to='/verify'
+                    className='block w-full py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium text-center'>
                     Proceed to Verification
-                </button>
+                </Link>
             </div>
         </div>
     );
