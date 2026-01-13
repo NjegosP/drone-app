@@ -1,22 +1,30 @@
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
-import {BrowsePage} from './pages/BrowsePage';
-import {VerifyPage} from './pages/VerifyPage';
-import {ResultPage} from './pages/ResultPage';
-import {CheckoutPage} from './pages/CheckoutPage';
+import {createBrowserRouter, RouterProvider} from 'react-router';
+import {BrowsePage} from './routes/Browse';
+import {CheckoutPage} from './routes/CheckoutPage';
+import {ResultPage} from './routes/ResultPage';
+import {VerifyPage} from './routes/VerifyPage';
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <BrowsePage />,
+    },
+    {
+        path: '/verify',
+        element: <VerifyPage />,
+    },
+    {
+        path: '/result',
+        element: <ResultPage />,
+    },
+    {
+        path: '/checkout',
+        element: <CheckoutPage />,
+    },
+]);
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<BrowsePage />} />
-                <Route path="/browse" element={<BrowsePage />} />
-                <Route path="/verify" element={<VerifyPage />} />
-                <Route path="/result" element={<ResultPage />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-        </BrowserRouter>
-    );
+    return <RouterProvider router={router} />;
 }
 
 export default App;
