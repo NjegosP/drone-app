@@ -6,7 +6,7 @@ import {drones} from '../data/drones';
 import {useStore} from '../store/useStore';
 import type {DroneCategory, Drone} from '../types';
 
-export const BrowsePage = () => {
+export const Browse = () => {
     const [selectedCategory, setSelectedCategory] =
         useState<DroneCategory>('filming');
     const {addToCart} = useStore();

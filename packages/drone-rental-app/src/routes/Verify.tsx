@@ -12,7 +12,7 @@ import {useStore} from '../store/useStore';
 
 type VerificationStep = 'selfie' | 'phone' | 'address';
 
-export const VerifyPage = () => {
+export const Verify = () => {
     const navigate = useNavigate();
     const [currentVerifyStep, setCurrentVerifyStep] =
         useState<VerificationStep>('selfie');
@@ -92,7 +92,6 @@ export const VerifyPage = () => {
                         />
                     </div>
                 </div>
-
                 <div className='border border-amber-200 rounded-lg p-6 m-auto w-full'>
                     {currentVerifyStep === 'selfie' && (
                         <div>
@@ -102,7 +101,6 @@ export const VerifyPage = () => {
                             <SelfieCapture onCapture={handleSelfieCapture} />
                         </div>
                     )}
-
                     {currentVerifyStep === 'phone' && (
                         <div>
                             <h2 className='text-xl font-semibold mb-4'>
@@ -111,7 +109,6 @@ export const VerifyPage = () => {
                             <PhoneInput onSubmit={handlePhoneSubmit} />
                         </div>
                     )}
-
                     {currentVerifyStep === 'address' && (
                         <div className='m-auto border-amber-950 border-2'>
                             <h2 className='text-xl font-semibold mb-4'>

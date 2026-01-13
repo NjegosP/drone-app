@@ -2,7 +2,7 @@ import {useNavigate} from 'react-router-dom';
 import {Header} from '../components/Header';
 import {useStore} from '../store/useStore';
 
-export const ResultPage = () => {
+export const Result = () => {
     const navigate = useNavigate();
     const {verificationData, resetVerification} = useStore();
 

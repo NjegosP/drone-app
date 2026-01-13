@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {Header} from '../components/Header';
 import {useStore} from '../store/useStore';
 
-export const CheckoutPage = () => {
+export const Checkout = () => {
     const navigate = useNavigate();
     const {cart, verificationData, clearCart, resetVerification} = useStore();
     const [isCompleted, setIsCompleted] = useState(false);
