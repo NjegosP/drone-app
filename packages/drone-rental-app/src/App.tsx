@@ -1,10 +1,10 @@
-import {createBrowserRouter, RouterProvider, Navigate} from 'react-router';
+import {createBrowserRouter, RouterProvider, redirect} from 'react-router';
 import {Layout} from './components/Layout';
 import {ErrorPage} from './pages/ErrorPage';
 import {Browse} from './routes/Browse';
-import {Verify} from './routes/Verify';
-import {Result} from './routes/Result';
-import {Checkout} from './routes/Checkout';
+import {Checkout, checkoutLoader} from './routes/Checkout';
+import {Result, resultLoader} from './routes/Result';
+import {Verify, verifyAction} from './routes/Verify';
 
 const router = createBrowserRouter([
     {
@@ -14,27 +14,26 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Navigate to='/browse' replace />,
-            },
-            {
-                path: 'browse',
                 element: <Browse />,
             },
             {
                 path: 'verify',
                 element: <Verify />,
+                action: verifyAction,
             },
             {
                 path: 'result',
                 element: <Result />,
+                loader: resultLoader,
             },
             {
                 path: 'checkout',
                 element: <Checkout />,
+                loader: checkoutLoader,
             },
             {
                 path: '*',
-                element: <Navigate to='/browse' replace />,
+                loader: () => redirect('/'),
             },
         ],
     },

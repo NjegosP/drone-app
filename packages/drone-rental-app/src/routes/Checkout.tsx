@@ -1,7 +1,15 @@
 import {useState} from 'react';
-import {Link, Navigate} from 'react-router';
+import {Link, redirect} from 'react-router';
 import {Header} from '../components/Header';
 import {useStore} from '../store/useStore';
+
+export const checkoutLoader = () => {
+    const {cart, verificationData} = useStore.getState();
+    if (!verificationData || cart.length === 0) {
+        return redirect('/browse');
+    }
+    return null;
+};
 
 export const Checkout = () => {
     const {cart, verificationData, clearCart, resetVerification} = useStore();
@@ -59,10 +67,6 @@ export const Checkout = () => {
                 </div>
             </div>
         );
-    }
-
-    if (!verificationData || cart.length === 0) {
-        return <Navigate to='/browse' replace />;
     }
 
     return (

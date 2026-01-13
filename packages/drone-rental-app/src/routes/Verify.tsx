@@ -5,62 +5,60 @@ import {
     getIdentityData,
     type Address,
 } from 'identity-verification-sdk';
-import {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useState, useRef} from 'react';
+import {redirect, Form, useNavigation} from 'react-router';
 import {Header} from '../components/Header';
 import {useStore} from '../store/useStore';
+
+export const verifyAction = async ({request}: {request: Request}) => {
+    const formData = await request.formData();
+    const selfieUrl = formData.get('selfieUrl') as string;
+    const phone = formData.get('phone') as string;
+    const address = JSON.parse(formData.get('address') as string) as Address;
+
+    try {
+        const verificationResult = await getIdentityData({
+            selfieUrl,
+            phone,
+            address,
+        });
+
+        useStore.getState().setVerificationData(verificationResult);
+        useStore.getState().setAddress(address);
+        return redirect('/result');
+    } catch (error) {
+        console.error('Verification error:', error);
+        throw error;
+    }
+};
 
 type VerificationStep = 'selfie' | 'phone' | 'address';
 
 export const Verify = () => {
-    const navigate = useNavigate();
+    const navigation = useNavigation();
+    const formRef = useRef<HTMLFormElement>(null);
     const [currentVerifyStep, setCurrentVerifyStep] =
         useState<VerificationStep>('selfie');
-    const [isLoading, setIsLoading] = useState(false);
-    const {
-        selfieUrl,
-        phone,
-        address,
-        verificationData,
-        setSelfieUrl,
-        setPhone,
-        setAddress,
-        setVerificationData,
-    } = useStore();
+    const [pendingAddress, setPendingAddress] = useState<Address | null>(null);
+    const {selfieUrl, phone, setSelfieUrl, setPhone} = useStore();
+
+    const isSubmitting = navigation.state === 'submitting';
 
     const handleSelfieCapture = (imageData: string) => {
         setSelfieUrl(imageData);
         setCurrentVerifyStep('phone');
     };
 
-    console.log('VD', verificationData);
-
     const handlePhoneSubmit = (data: {phoneNumber: string}) => {
         setPhone(data.phoneNumber);
         setCurrentVerifyStep('address');
     };
 
-    console.log(address);
-
-    const handleAddressSubmit = async (data: Address) => {
+    const handleAddressSubmit = (data: Address) => {
         console.log(data);
-        setAddress(data);
-        setIsLoading(true);
-
-        try {
-            const verificationResult = await getIdentityData({
-                selfieUrl: selfieUrl!,
-                phone: phone!,
-                address: data,
-            });
-
-            setVerificationData(verificationResult);
-            navigate('/result');
-        } catch (error) {
-            console.error('Verification error:', error);
-        } finally {
-            setIsLoading(false);
-        }
+        setPendingAddress(data);
+        // Submit the form programmatically
+        setTimeout(() => formRef.current?.requestSubmit(), 0);
     };
 
     return (
@@ -92,37 +90,50 @@ export const Verify = () => {
                         />
                     </div>
                 </div>
-                <div className='border border-amber-200 rounded-lg p-6 m-auto w-full'>
-                    {currentVerifyStep === 'selfie' && (
-                        <div>
-                            <h2 className='text-xl font-semibold mb-4'>
-                                Capture Your Selfie
-                            </h2>
-                            <SelfieCapture onCapture={handleSelfieCapture} />
-                        </div>
-                    )}
-                    {currentVerifyStep === 'phone' && (
-                        <div>
-                            <h2 className='text-xl font-semibold mb-4'>
-                                Enter Your Phone Number
-                            </h2>
-                            <PhoneInput onSubmit={handlePhoneSubmit} />
-                        </div>
-                    )}
-                    {currentVerifyStep === 'address' && (
-                        <div className='m-auto border-amber-950 border-2'>
-                            <h2 className='text-xl font-semibold mb-4'>
-                                Enter Your Address
-                            </h2>
-                            <AddressForm onSubmit={handleAddressSubmit} />
-                            {isLoading && (
-                                <div className='mt-4 text-center text-sm text-gray-600'>
-                                    Verifying your identity...
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </div>
+                <Form ref={formRef} method='post'>
+                    <input
+                        type='hidden'
+                        name='selfieUrl'
+                        value={selfieUrl || ''}
+                    />
+                    <input type='hidden' name='phone' value={phone || ''} />
+                    <input
+                        type='hidden'
+                        name='address'
+                        value={pendingAddress ? JSON.stringify(pendingAddress) : ''}
+                    />
+                    <div className='border border-amber-200 rounded-lg p-6 m-auto w-full'>
+                        {currentVerifyStep === 'selfie' && (
+                            <div>
+                                <h2 className='text-xl font-semibold mb-4'>
+                                    Capture Your Selfie
+                                </h2>
+                                <SelfieCapture onCapture={handleSelfieCapture} />
+                            </div>
+                        )}
+                        {currentVerifyStep === 'phone' && (
+                            <div>
+                                <h2 className='text-xl font-semibold mb-4'>
+                                    Enter Your Phone Number
+                                </h2>
+                                <PhoneInput onSubmit={handlePhoneSubmit} />
+                            </div>
+                        )}
+                        {currentVerifyStep === 'address' && (
+                            <div className='m-auto border-amber-950 border-2'>
+                                <h2 className='text-xl font-semibold mb-4'>
+                                    Enter Your Address
+                                </h2>
+                                <AddressForm onSubmit={handleAddressSubmit} />
+                                {isSubmitting && (
+                                    <div className='mt-4 text-center text-sm text-gray-600'>
+                                        Verifying your identity...
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </Form>
             </div>
         </div>
     );

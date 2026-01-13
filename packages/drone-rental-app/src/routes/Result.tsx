@@ -1,13 +1,17 @@
-import {Link, Navigate} from 'react-router';
+import {Link, redirect} from 'react-router';
 import {Header} from '../components/Header';
 import {useStore} from '../store/useStore';
 
+export const resultLoader = () => {
+    const {verificationData} = useStore.getState();
+    if (!verificationData) {
+        return redirect('/browse');
+    }
+    return null;
+};
+
 export const Result = () => {
     const {verificationData, resetVerification} = useStore();
-
-    if (!verificationData) {
-        return <Navigate to='/browse' replace />;
-    }
 
     console.log(verificationData);
 
