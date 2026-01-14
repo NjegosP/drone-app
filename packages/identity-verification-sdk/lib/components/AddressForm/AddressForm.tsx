@@ -10,10 +10,8 @@ import type {AddressFormType} from './types';
 
 export const AddressForm = ({
     onSubmit,
-    submitButtonRef,
 }: {
     onSubmit: (data: AddressFormType) => void;
-    submitButtonRef?: React.RefObject<HTMLButtonElement | null>;
 }) => {
     const {
         register,
@@ -147,7 +145,9 @@ export const AddressForm = ({
                     </InputWrapper>
                 </div>
             </div>
-            <button ref={submitButtonRef} className='sr-only' type='submit'>
+            <button
+                className='w-full py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium mt-4'
+                type='submit'>
                 Submit
             </button>
         </form>

@@ -7,10 +7,8 @@ import type {NormalizedPhoneNumber} from './types';
 
 export const PhoneInput = ({
     onSubmit,
-    submitButtonRef,
 }: {
     onSubmit: (data: NormalizedPhoneNumber) => void;
-    submitButtonRef?: React.RefObject<HTMLButtonElement | null>;
 }) => {
     const {
         register,
@@ -45,14 +43,13 @@ export const PhoneInput = ({
                     maxLength={15}
                     error={!!errors?.phoneNumber}
                 />
-                <button
-                    ref={submitButtonRef}
-                    type='submit'
-                    className='sr-only'
-                    aria-label='Submit'>
-                    Submit
-                </button>
             </div>
+            <button
+                type='submit'
+                className='w-full py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium mt-4'
+                aria-label='Submit'>
+                Continue
+            </button>
         </form>
     );
 };

@@ -5,16 +5,16 @@
         "moduleResolution": "Bundler",
         "jsx": "react-jsx",
         "declaration": true,
-        "emitDeclarationOnly": true,
+        "emitDeclarationOnly": false,
         "outDir": "dist",
         "strict": true,
         "skipLibCheck": true,
         "esModuleInterop": true,
         "baseUrl": ".",
         "paths": {
-            "@/assets/*": ["assets/*"]
-        }
+            "@/assets/*": ["lib/assets/*"]
+        },
+        "types": ["vitest/globals", "@testing-library/jest-dom"]
     },
-    "include": ["lib/**/*", "assets/**/*", "vite-env.d.ts", "vite.config.ts"],
-    "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"]
+    "include": ["lib/**/*", "vite-env.d.ts"]
 }

@@ -12,12 +12,21 @@ export const SelfieCapture: React.FC<SelfieCaptureProp> = ({
     const {
         webcamRef,
         imageSrc,
+        validatedImage,
         hasError,
         isImageProcessing,
         processingError,
         handleActionClick,
         handleUserMediaError,
-    } = useSelfieCapture({onCapture, onError});
+    } = useSelfieCapture({onError});
+
+    const isDisabled = !validatedImage || isImageProcessing;
+
+    const handleSubmit = () => {
+        if (validatedImage) {
+            onCapture(validatedImage);
+        }
+    };
 
     if (hasError) {
         return <WebCamPermissionError />;
@@ -49,9 +58,18 @@ export const SelfieCapture: React.FC<SelfieCaptureProp> = ({
                 )}
             </div>
             <button
+                aria-label={imageSrc ? 'retake' : 'capture'}
                 className='rounded-full mt-2 bg-white w-10 h-10 flex items-center justify-center relative border border-amber-200'
                 onClick={handleActionClick}>
                 {imageSrc ? <RetakeIcon /> : <CaptureIcon />}
+            </button>
+            <button
+                disabled={isDisabled}
+                type='button'
+                onClick={handleSubmit}
+                className='w-full py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium mt-4 disabled:opacity-50 disabled:cursor-not-allowed'
+                aria-label='Continue'>
+                Continue
             </button>
         </div>
     );

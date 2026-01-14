@@ -1,11 +1,12 @@
 import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import {AddressForm} from './AddressForm';
 
 describe('AddressForm', () => {
     it('renders all form fields', () => {
-        render(<AddressForm />);
+        const onSubmit = vi.fn();
+        render(<AddressForm onSubmit={onSubmit} />);
 
         expect(screen.getByLabelText(/street address/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/city/i)).toBeInTheDocument();
@@ -15,7 +16,8 @@ describe('AddressForm', () => {
     });
 
     it('shows all fields are required', () => {
-        render(<AddressForm />);
+        const onSubmit = vi.fn();
+        render(<AddressForm onSubmit={onSubmit} />);
 
         expect(screen.getByText(/street address \*/i)).toBeInTheDocument();
         expect(screen.getByText(/city \*/i)).toBeInTheDocument();
@@ -26,7 +28,8 @@ describe('AddressForm', () => {
 
     it('shows validation errors for empty fields', async () => {
         const user = userEvent.setup();
-        render(<AddressForm />);
+        const onSubmit = vi.fn();
+        render(<AddressForm onSubmit={onSubmit} />);
 
         const submitButton = screen.getByRole('button', {name: /submit/i});
         await user.click(submitButton);
@@ -39,13 +42,16 @@ describe('AddressForm', () => {
             expect(
                 screen.getByText(/state\/province is required/i)
             ).toBeInTheDocument();
-            expect(screen.getByText(/zip code is required/i)).toBeInTheDocument();
+            expect(
+                screen.getByText(/zip code is required/i)
+            ).toBeInTheDocument();
         });
     });
 
     it('submits form with valid data', async () => {
         const user = userEvent.setup();
-        render(<AddressForm />);
+        const onSubmit = vi.fn();
+        render(<AddressForm onSubmit={onSubmit} />);
 
         await user.type(
             screen.getByLabelText(/street address/i),
@@ -60,16 +66,20 @@ describe('AddressForm', () => {
         await user.click(submitButton);
 
         await waitFor(() => {
-            expect(
-                screen.queryByText(/street address is required/i)
-            ).not.toBeInTheDocument();
-            expect(screen.queryByText(/city is required/i)).not.toBeInTheDocument();
+            expect(onSubmit).toHaveBeenCalledWith({
+                streetAddress: '123 Main St',
+                city: 'New York',
+                stateProvince: 'NY',
+                country: 'US',
+                zipCode: '10001',
+            });
         });
     });
 
     it('trims whitespace from inputs', async () => {
         const user = userEvent.setup();
-        render(<AddressForm />);
+        const onSubmit = vi.fn();
+        render(<AddressForm onSubmit={onSubmit} />);
 
         await user.type(
             screen.getByLabelText(/street address/i),
@@ -85,14 +95,19 @@ describe('AddressForm', () => {
         await user.click(submitButton);
 
         await waitFor(() => {
-            expect(
-                screen.queryByText(/street address is required/i)
-            ).not.toBeInTheDocument();
+            expect(onSubmit).toHaveBeenCalledWith({
+                streetAddress: '123 Main St',
+                city: 'New York',
+                stateProvince: 'NY',
+                country: 'US',
+                zipCode: '10001',
+            });
         });
     });
 
     it('enforces maxLength constraints', () => {
-        render(<AddressForm />);
+        const onSubmit = vi.fn();
+        render(<AddressForm onSubmit={onSubmit} />);
 
         const streetAddressInput = screen.getByLabelText(
             /street address/i
@@ -110,7 +125,8 @@ describe('AddressForm', () => {
     });
 
     it('has proper autocomplete attributes', () => {
-        render(<AddressForm />);
+        const onSubmit = vi.fn();
+        render(<AddressForm onSubmit={onSubmit} />);
 
         const streetAddressInput = screen.getByLabelText(
             /street address/i
@@ -119,10 +135,14 @@ describe('AddressForm', () => {
         const stateInput = screen.getByLabelText(
             /state\/province/i
         ) as HTMLInputElement;
-        const countrySelect = screen.getByLabelText(/country/i) as HTMLSelectElement;
+        const countrySelect = screen.getByLabelText(
+            /country/i
+        ) as HTMLSelectElement;
         const zipInput = screen.getByLabelText(/zip code/i) as HTMLInputElement;
 
-        expect(streetAddressInput.getAttribute('autocomplete')).toBe('street-address');
+        expect(streetAddressInput.getAttribute('autocomplete')).toBe(
+            'street-address'
+        );
         expect(cityInput.getAttribute('autocomplete')).toBe('address-level2');
         expect(stateInput.getAttribute('autocomplete')).toBe('address-level1');
         expect(countrySelect.getAttribute('autocomplete')).toBe('country');
@@ -131,7 +151,8 @@ describe('AddressForm', () => {
 
     it('has aria-describedby linking inputs to errors', async () => {
         const user = userEvent.setup();
-        render(<AddressForm />);
+        const onSubmit = vi.fn();
+        render(<AddressForm onSubmit={onSubmit} />);
 
         const submitButton = screen.getByRole('button', {name: /submit/i});
         await user.click(submitButton);
@@ -152,7 +173,8 @@ describe('AddressForm', () => {
 
     it('shows visual error state on invalid fields', async () => {
         const user = userEvent.setup();
-        render(<AddressForm />);
+        const onSubmit = vi.fn();
+        render(<AddressForm onSubmit={onSubmit} />);
 
         const submitButton = screen.getByRole('button', {name: /submit/i});
         await user.click(submitButton);
@@ -161,12 +183,15 @@ describe('AddressForm', () => {
             const streetAddressInput = screen.getByLabelText(
                 /street address/i
             ) as HTMLInputElement;
-            expect(streetAddressInput.getAttribute('aria-invalid')).toBe('true');
+            expect(streetAddressInput.getAttribute('aria-invalid')).toBe(
+                'true'
+            );
         });
     });
 
     it('has proper form accessibility attributes', () => {
-        render(<AddressForm />);
+        const onSubmit = vi.fn();
+        render(<AddressForm onSubmit={onSubmit} />);
 
         const form = screen.getByLabelText('Address information');
         expect(form).toHaveAttribute('aria-label', 'Address information');
@@ -174,11 +199,10 @@ describe('AddressForm', () => {
     });
 
     it('shows placeholders for input guidance', () => {
-        render(<AddressForm />);
+        const onSubmit = vi.fn();
+        render(<AddressForm onSubmit={onSubmit} />);
 
-        expect(
-            screen.getByPlaceholderText('123 Main St')
-        ).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('123 Main St')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('New York')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('California')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('12345')).toBeInTheDocument();

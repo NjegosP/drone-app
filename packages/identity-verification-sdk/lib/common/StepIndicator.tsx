@@ -1,27 +1,34 @@
+export type ModuleType = 'selfie' | 'phone' | 'address';
+
+export interface ModuleConfig {
+    module: ModuleType;
+}
+
+const moduleLabels: Record<ModuleType, string> = {
+    selfie: 'Selfie',
+    phone: 'Phone',
+    address: 'Address',
+};
+
 export const StepIndicator = ({
-    currentStep,
+    flowConfig,
+    currentModule,
 }: {
-    currentStep: VerificationStep;
+    flowConfig: ModuleConfig[];
+    currentModule: ModuleType;
 }) => (
     <div className='mb-4 sm:mb-6'>
         <div className='flex items-center justify-between'>
-            <Step
-                title='Selfie'
-                number={1}
-                isSelected={currentStep === 'selfie'}
-            />
-            <Separator />
-            <Step
-                title='Phone'
-                number={2}
-                isSelected={currentStep === 'phone'}
-            />
-            <Separator />
-            <Step
-                title='Address'
-                number={3}
-                isSelected={currentStep === 'address'}
-            />
+            {flowConfig.map((config, index) => (
+                <div key={config.module} className='contents'>
+                    <Step
+                        title={moduleLabels[config.module]}
+                        number={index + 1}
+                        isSelected={currentModule === config.module}
+                    />
+                    {index < flowConfig.length - 1 && <Separator />}
+                </div>
+            ))}
         </div>
     </div>
 );
@@ -53,5 +60,3 @@ const Step = ({
 const Separator = () => (
     <div className='flex-1 h-px bg-gray-200 mx-2 sm:mx-4' />
 );
-
-type VerificationStep = 'selfie' | 'phone' | 'address';

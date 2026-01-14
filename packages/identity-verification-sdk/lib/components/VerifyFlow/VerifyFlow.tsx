@@ -1,133 +1,104 @@
-import {useRef, useState} from 'react';
-import type {Address} from '../../types';
+import {useState} from 'react';
+import {StepIndicator, type ModuleConfig} from '../../common';
+import type {Address, IdentityData} from '../../types';
+import {getIdentityData} from '../../utils/getIdentityData';
 import {AddressForm} from '../AddressForm/AddressForm';
 import type {AddressFormType} from '../AddressForm/types';
 import {PhoneInput} from '../PhoneInput/PhoneInput';
 import type {NormalizedPhoneNumber} from '../PhoneInput/types';
 import {SelfieCapture} from '../SelfieCapture/SelfieCapture';
-import {StepIndicator} from 'lib/common';
 
-type VerificationStep = 'selfie' | 'phone' | 'address';
+interface CollectedData {
+    selfieUrl?: string;
+    phone?: string;
+    address?: Address;
+}
 
 interface VerifyFlowProps {
-    onComplete: (data: {
-        selfieUrl: string;
-        phone: string;
-        address: Address;
-    }) => void;
+    flowConfig: ModuleConfig[];
+    onComplete: (data: IdentityData) => void;
     onError?: (error: string) => void;
 }
 
-export const VerifyFlow = ({onComplete, onError}: VerifyFlowProps) => {
-    const [currentStep, setCurrentStep] = useState<VerificationStep>('selfie');
-    const [selfieUrl, setSelfieUrl] = useState<string | null>(null);
-    const [phone, setPhone] = useState<string | null>(null);
-    // const [address, setAddress] = useState<Address | null>(null);
-    const [selfieError, setSelfieError] = useState<string | null>(null);
+export const VerifyFlow = ({flowConfig, onComplete, onError}: VerifyFlowProps) => {
+    const [currentStepIndex, setCurrentStepIndex] = useState(0);
+    const [collectedData, setCollectedData] = useState<CollectedData>({});
+    const [isLoading, setIsLoading] = useState(false);
 
-    const phoneSubmitRef = useRef<HTMLButtonElement | null>(null);
-    const addressSubmitRef = useRef<HTMLButtonElement | null>(null);
+    const currentModule = flowConfig[currentStepIndex].module;
+    const isLastStep = currentStepIndex === flowConfig.length - 1;
 
-    const handleSelfieCapture = (imageData: string) => {
-        setSelfieUrl(imageData);
-        setSelfieError(null);
+    const goToNextStep = async (data: Partial<CollectedData>) => {
+        const updatedData = {...collectedData, ...data};
+        setCollectedData(updatedData);
+
+        if (isLastStep) {
+            setIsLoading(true);
+            try {
+                const result = await getIdentityData({
+                    selfieUrl: updatedData.selfieUrl!,
+                    phone: updatedData.phone!,
+                    address: updatedData.address!,
+                });
+                onComplete(result);
+            } catch (error) {
+                onError?.(error instanceof Error ? error.message : 'Verification failed');
+            } finally {
+                setIsLoading(false);
+            }
+        } else {
+            setCurrentStepIndex(prev => prev + 1);
+        }
+    };
+
+    const handleSelfieSubmit = (imageData: string) => {
+        goToNextStep({selfieUrl: imageData});
     };
 
     const handleSelfieError = (error: string | DOMException) => {
         const errorMessage = typeof error === 'string' ? error : error.message;
-        setSelfieError(errorMessage);
         onError?.(errorMessage);
     };
 
     const handlePhoneSubmit = (data: NormalizedPhoneNumber) => {
-        setPhone(data.phoneNumber);
-        setCurrentStep('address');
+        goToNextStep({phone: data.phoneNumber});
     };
 
     const handleAddressSubmit = (data: AddressFormType) => {
-        // setAddress(data);
-        if (selfieUrl && phone) {
-            onComplete({
-                selfieUrl,
-                phone,
-                address: data,
-            });
+        goToNextStep({address: data});
+    };
+
+    const renderModule = () => {
+        switch (currentModule) {
+            case 'selfie':
+                return (
+                    <SelfieCapture
+                        onCapture={handleSelfieSubmit}
+                        onError={handleSelfieError}
+                    />
+                );
+            case 'phone':
+                return <PhoneInput onSubmit={handlePhoneSubmit} />;
+            case 'address':
+                return <AddressForm onSubmit={handleAddressSubmit} />;
+            default:
+                return null;
         }
     };
 
-    const handleContinue = () => {
-        if (currentStep === 'selfie' && selfieUrl) {
-            setCurrentStep('phone');
-        } else if (currentStep === 'phone') {
-            phoneSubmitRef.current?.click();
-        } else if (currentStep === 'address') {
-            addressSubmitRef.current?.click();
-        }
-    };
-
-    const canContinue = () => {
-        if (currentStep === 'selfie') return !!selfieUrl;
-        if (currentStep === 'phone') return true;
-        if (currentStep === 'address') return true;
-        return false;
-    };
+    if (isLoading) {
+        return (
+            <div className='flex flex-col items-center justify-center py-8'>
+                <div className='w-8 h-8 border-4 border-amber-400 border-t-transparent rounded-full animate-spin' />
+                <p className='mt-4 text-sm text-gray-600'>Verifying your identity...</p>
+            </div>
+        );
+    }
 
     return (
-        <div className='flex flex-col min-h-125'>
-            <StepIndicator currentStep={currentStep} />
-            <div className='flex-1 py-6'>
-                {currentStep === 'selfie' && (
-                    <div>
-                        <h2 className='text-lg sm:text-xl font-semibold mb-4 text-center'>
-                            Capture Your Selfie
-                        </h2>
-                        <SelfieCapture
-                            onCapture={handleSelfieCapture}
-                            onError={handleSelfieError}
-                        />
-                        {selfieError && (
-                            <div className='mt-4 p-3 bg-red-50 border border-red-200 rounded-lg'>
-                                <p className='text-red-700 text-sm text-center'>
-                                    {selfieError}
-                                </p>
-                            </div>
-                        )}
-                    </div>
-                )}
-                {currentStep === 'phone' && (
-                    <div>
-                        <h2 className='text-lg sm:text-xl font-semibold mb-4'>
-                            Enter Your Phone Number
-                        </h2>
-                        <PhoneInput
-                            onSubmit={handlePhoneSubmit}
-                            submitButtonRef={phoneSubmitRef}
-                        />
-                    </div>
-                )}
-                {currentStep === 'address' && (
-                    <div>
-                        <h2 className='text-lg sm:text-xl font-semibold mb-4'>
-                            Enter Your Address
-                        </h2>
-                        <AddressForm
-                            onSubmit={handleAddressSubmit}
-                            submitButtonRef={addressSubmitRef}
-                        />
-                    </div>
-                )}
-            </div>
-
-            <div className='border-t border-amber-200 pt-4'>
-                <button
-                    onClick={handleContinue}
-                    disabled={!canContinue()}
-                    className='w-full py-2.5 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-amber-400'>
-                    {currentStep === 'address' ? 'Submit' : 'Continue'}
-                </button>
-            </div>
+        <div className='flex flex-col'>
+            <StepIndicator flowConfig={flowConfig} currentModule={currentModule} />
+            {renderModule()}
         </div>
     );
 };
-
-const VerifyModule = ({title, component}) => {};

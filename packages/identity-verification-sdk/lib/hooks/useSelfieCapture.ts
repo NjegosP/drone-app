@@ -3,13 +3,13 @@ import Webcam from 'react-webcam';
 import {analyzeImageQuality} from '../services/imageProcessingService';
 
 interface UseSelfieCapture {
-    onCapture: (image: string) => void;
     onError?: (error: string | DOMException) => void;
 }
 
-export const useSelfieCapture = ({onCapture, onError}: UseSelfieCapture) => {
+export const useSelfieCapture = ({onError}: UseSelfieCapture) => {
     const webcamRef = useRef<Webcam>(null);
     const [imageSrc, setImageSrc] = useState<string | null>(null);
+    const [validatedImage, setValidatedImage] = useState<string | null>(null);
     const [hasError, setHasError] = useState(false);
     const [isImageProcessing, setIsImageProcessing] = useState(false);
     const [processingError, setProcessingError] = useState(false);
@@ -20,13 +20,14 @@ export const useSelfieCapture = ({onCapture, onError}: UseSelfieCapture) => {
         if (!imageSrc) return;
 
         setImageSrc(imageSrc);
+        setValidatedImage(null);
         setIsImageProcessing(true);
         setProcessingError(false);
 
         analyzeImageQuality(imageSrc)
             .then(({isGoodQuality, image}) => {
                 if (isGoodQuality) {
-                    onCapture(image);
+                    setValidatedImage(image);
                 } else {
                     setProcessingError(true);
                 }
@@ -37,6 +38,7 @@ export const useSelfieCapture = ({onCapture, onError}: UseSelfieCapture) => {
     const handleActionClick = () => {
         if (imageSrc) {
             setImageSrc(null);
+            setValidatedImage(null);
             setProcessingError(false);
             return;
         }
@@ -53,6 +55,7 @@ export const useSelfieCapture = ({onCapture, onError}: UseSelfieCapture) => {
     return {
         webcamRef,
         imageSrc,
+        validatedImage,
         hasError,
         isImageProcessing,
         processingError,
