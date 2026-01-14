@@ -60,17 +60,24 @@ function App() {
     };
 
     return (
-        <div style={{maxWidth: '600px', margin: '0 auto', padding: '2rem'}}>
+        <div style={{margin: '0 auto', padding: '2rem'}}>
             <h1>Identity Verification SDK - Demo</h1>
 
             <div style={{marginBottom: '2rem'}}>
-                <div style={{display: 'flex', gap: '1rem', marginBottom: '2rem'}}>
+                <div
+                    style={{
+                        display: 'flex',
+                        gap: '1rem',
+                        marginBottom: '2rem',
+                    }}>
                     <button
                         onClick={() => setCurrentStep('selfie')}
                         style={{
                             padding: '0.5rem 1rem',
                             background:
-                                currentStep === 'selfie' ? '#3b82f6' : '#e5e7eb',
+                                currentStep === 'selfie'
+                                    ? '#3b82f6'
+                                    : '#e5e7eb',
                             color: currentStep === 'selfie' ? 'white' : 'black',
                             border: 'none',
                             borderRadius: '4px',
@@ -80,7 +87,6 @@ function App() {
                     </button>
                     <button
                         onClick={() => setCurrentStep('phone')}
-                        disabled={!selfieUrl}
                         style={{
                             padding: '0.5rem 1rem',
                             background:
@@ -88,14 +94,12 @@ function App() {
                             color: currentStep === 'phone' ? 'white' : 'black',
                             border: 'none',
                             borderRadius: '4px',
-                            cursor: selfieUrl ? 'pointer' : 'not-allowed',
                             opacity: selfieUrl ? 1 : 0.5,
                         }}>
                         2. Phone
                     </button>
                     <button
                         onClick={() => setCurrentStep('address')}
-                        disabled={!phone}
                         style={{
                             padding: '0.5rem 1rem',
                             background:
@@ -106,35 +110,43 @@ function App() {
                                 currentStep === 'address' ? 'white' : 'black',
                             border: 'none',
                             borderRadius: '4px',
-                            cursor: phone ? 'pointer' : 'not-allowed',
                             opacity: phone ? 1 : 0.5,
                         }}>
                         3. Address
                     </button>
                     <button
                         onClick={() => setCurrentStep('result')}
-                        disabled={!result}
                         style={{
                             padding: '0.5rem 1rem',
                             background:
-                                currentStep === 'result' ? '#3b82f6' : '#e5e7eb',
+                                currentStep === 'result'
+                                    ? '#3b82f6'
+                                    : '#e5e7eb',
                             color: currentStep === 'result' ? 'white' : 'black',
                             border: 'none',
                             borderRadius: '4px',
-                            cursor: result ? 'pointer' : 'not-allowed',
                             opacity: result ? 1 : 0.5,
                         }}>
                         4. Result
                     </button>
                 </div>
 
-                {currentStep === 'selfie' && (
-                    <div>
+                <div className='w-full flex flex-row'>
+                    <div className='h-[500px] w-[280px]'>
                         <h2>Step 1: Capture Selfie</h2>
                         <SelfieCapture onCapture={handleSelfieCapture} />
                     </div>
-                )}
+                    {/* <div>
+                        <h2>Step 1: Capture Selfie</h2>
+                        <SelfieCapture onCapture={handleSelfieCapture} />
+                    </div>
+                    <div>
+                        <h2>Step 1: Capture Selfie</h2>
+                        <SelfieCapture onCapture={handleSelfieCapture} />
+                    </div> */}
+                </div>
 
+                {/* 
                 {currentStep === 'phone' && (
                     <div>
                         <h2>Step 2: Enter Phone Number</h2>
@@ -187,7 +199,7 @@ function App() {
                             Start Over
                         </button>
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     );
