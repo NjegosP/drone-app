@@ -13,7 +13,6 @@ import {useStore} from '../store/useStore';
 type VerificationStep = 'selfie' | 'phone' | 'address';
 
 export const Verify = () => {
-    // TO DO -- research redirect in React Router, this seems important
     const navigate = useNavigate();
     const [currentVerifyStep, setCurrentVerifyStep] =
         useState<VerificationStep>('selfie');
@@ -42,17 +41,12 @@ export const Verify = () => {
         console.error('Selfie capture error:', errorMessage);
     };
 
-    console.log('VD', verificationData);
-
     const handlePhoneSubmit = (data: {phoneNumber: string}) => {
         setPhone(data.phoneNumber);
         setCurrentVerifyStep('address');
     };
 
-    console.log(address);
-
     const handleAddressSubmit = async (data: Address) => {
-        console.log(data);
         setAddress(data);
         setIsLoading(true);
 
@@ -79,11 +73,11 @@ export const Verify = () => {
                 subtitle='Complete verification to proceed with checkout'
             />
             <StepIndicator currentVerifyStep={currentVerifyStep} />
-            <div className='max-w-3xl mx-auto px-6 py-8 w-full'>
-                <div className='border border-amber-200 rounded-lg p-6 m-auto w-full'>
+            <div className='max-w-3xl mx-auto px-4 sm:px-6 py-4 sm:py-6 md:py-8 w-full'>
+                <div className='border border-amber-200 rounded-lg p-4 sm:p-6 m-auto w-full'>
                     {currentVerifyStep === 'selfie' && (
                         <div>
-                            <h2 className='text-xl font-semibold mb-4'>
+                            <h2 className='text-lg sm:text-xl font-semibold mb-4'>
                                 Capture Your Selfie
                             </h2>
                             <SelfieCapture
@@ -101,15 +95,15 @@ export const Verify = () => {
                     )}
                     {currentVerifyStep === 'phone' && (
                         <div>
-                            <h2 className='text-xl font-semibold mb-4'>
+                            <h2 className='text-lg sm:text-xl font-semibold mb-4'>
                                 Enter Your Phone Number
                             </h2>
                             <PhoneInput onSubmit={handlePhoneSubmit} />
                         </div>
                     )}
                     {currentVerifyStep === 'address' && (
-                        <div className='m-auto border-amber-950 border-2'>
-                            <h2 className='text-xl font-semibold mb-4'>
+                        <div>
+                            <h2 className='text-lg sm:text-xl font-semibold mb-4'>
                                 Enter Your Address
                             </h2>
                             <AddressForm onSubmit={handleAddressSubmit} />
@@ -135,28 +129,28 @@ const Step = ({
     title: string;
     isSelected: boolean;
 }) => (
-    <div className='flex items-center gap-2'>
+    <div className='flex items-center gap-1 sm:gap-2'>
         <div
-            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+            className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium ${
                 isSelected
                     ? 'bg-amber-400 text-black'
                     : 'bg-gray-200 text-gray-600'
             }`}>
             {number}
         </div>
-        <span className='text-sm font-medium'>{title}</span>
+        <span className='text-xs sm:text-sm font-medium hidden sm:inline'>{title}</span>
     </div>
 );
 
-const Separator = () => <div className='flex-1 h-px bg-gray-200 mx-4' />;
+const Separator = () => <div className='flex-1 h-px bg-gray-200 mx-2 sm:mx-4' />;
 
 const StepIndicator = ({
     currentVerifyStep,
 }: {
     currentVerifyStep: VerificationStep;
 }) => (
-    <div className='mb-8'>
-        <div className='flex items-center justify-between mb-4'>
+    <div className='mb-4 sm:mb-6 md:mb-8 px-4 sm:px-6 max-w-3xl mx-auto'>
+        <div className='flex items-center justify-between'>
             <Step
                 title='Selfie'
                 number={1}

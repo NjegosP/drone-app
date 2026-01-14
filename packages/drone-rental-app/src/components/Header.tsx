@@ -17,12 +17,12 @@ export const Header = ({title = 'SkyRent Drones', subtitle}: HeaderProps) => {
 
     return (
         <header className='border-b border-amber-200 bg-white sticky top-0 z-10'>
-            <div className='max-w-7xl mx-auto px-6 py-4'>
+            <div className='max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4'>
                 <div className='flex items-center justify-between'>
                     <Link to='/browse' className='cursor-pointer'>
-                        <h1 className='text-2xl font-bold'>{title}</h1>
+                        <h1 className='text-lg sm:text-xl md:text-2xl font-bold'>{title}</h1>
                         {subtitle && (
-                            <p className='text-sm text-gray-600'>{subtitle}</p>
+                            <p className='text-xs sm:text-sm text-gray-600 hidden sm:block'>{subtitle}</p>
                         )}
                     </Link>
 

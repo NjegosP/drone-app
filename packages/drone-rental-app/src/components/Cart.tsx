@@ -11,21 +11,21 @@ export const Cart = () => {
 
     if (cart.length === 0) {
         return (
-            <div className='border border-amber-200 rounded-lg p-4'>
-                <h2 className='text-xl font-semibold mb-4'>Cart</h2>
+            <div className='border border-amber-200 rounded-lg p-3 sm:p-4'>
+                <h2 className='text-lg sm:text-xl font-semibold mb-3 sm:mb-4'>Cart</h2>
                 <p className='text-gray-500 text-sm'>Your cart is empty</p>
             </div>
         );
     }
 
     return (
-        <div className='border border-amber-200 rounded-lg p-4'>
-            <h2 className='text-xl font-semibold mb-4'>Cart</h2>
-            <div className='space-y-3 mb-4'>
+        <div className='border border-amber-200 rounded-lg p-3 sm:p-4'>
+            <h2 className='text-lg sm:text-xl font-semibold mb-3 sm:mb-4'>Cart</h2>
+            <div className='space-y-2 sm:space-y-3 mb-3 sm:mb-4'>
                 {cart.map((item) => (
                     <div
                         key={item.drone.id}
-                        className='flex justify-between items-start pb-3 border-b border-amber-100'>
+                        className='flex justify-between items-start pb-2 sm:pb-3 border-b border-amber-100'>
                         <div className='flex-1'>
                             <p className='font-medium text-sm'>
                                 {item.drone.name}
@@ -35,7 +35,7 @@ export const Cart = () => {
                                 {item.drone.dailyPrice}
                             </p>
                         </div>
-                        <div className='text-right'>
+                        <div className='text-right ml-2'>
                             <p className='font-medium text-sm'>
                                 ${item.drone.dailyPrice * item.days}
                             </p>
@@ -49,13 +49,13 @@ export const Cart = () => {
                 ))}
             </div>
             <div className='pt-3 border-t border-amber-200'>
-                <div className='flex justify-between items-center mb-4'>
-                    <span className='font-semibold'>Total:</span>
-                    <span className='font-semibold text-lg'>${total}</span>
+                <div className='flex justify-between items-center mb-3 sm:mb-4'>
+                    <span className='font-semibold text-sm sm:text-base'>Total:</span>
+                    <span className='font-semibold text-base sm:text-lg'>${total}</span>
                 </div>
                 <Link
                     to='/verify'
-                    className='block w-full py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium text-center'>
+                    className='block w-full py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium text-center text-sm sm:text-base'>
                     Proceed to Verification
                 </Link>
             </div>

@@ -22,11 +22,11 @@ export const ErrorPage = () => {
         <div className='min-h-screen bg-white'>
             <Header />
 
-            <div className='max-w-3xl mx-auto px-6 py-16'>
-                <div className='border border-amber-200 rounded-lg p-8 text-center'>
-                    <div className='w-20 h-20 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-6'>
+            <div className='max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16'>
+                <div className='border border-amber-200 rounded-lg p-6 sm:p-8 text-center'>
+                    <div className='w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-4 sm:mb-6'>
                         <svg
-                            className='w-10 h-10'
+                            className='w-8 h-8 sm:w-10 sm:h-10'
                             fill='none'
                             viewBox='0 0 24 24'
                             stroke='currentColor'>
@@ -39,14 +39,14 @@ export const ErrorPage = () => {
                         </svg>
                     </div>
 
-                    <h1 className='text-6xl font-bold text-gray-800 mb-2'>
+                    <h1 className='text-4xl sm:text-5xl md:text-6xl font-bold text-gray-800 mb-2'>
                         {errorStatus}
                     </h1>
-                    <h2 className='text-2xl font-semibold text-gray-700 mb-4'>
+                    <h2 className='text-lg sm:text-xl md:text-2xl font-semibold text-gray-700 mb-4'>
                         {errorMessage}
                     </h2>
 
-                    <p className='text-gray-600 mb-8'>
+                    <p className='text-sm sm:text-base text-gray-600 mb-6 sm:mb-8'>
                         {errorStatus === '404'
                             ? "The page you're looking for doesn't exist or has been moved."
                             : 'Something went wrong. Please try again later.'}
@@ -55,7 +55,7 @@ export const ErrorPage = () => {
                     <div className='flex gap-4 justify-center'>
                         <Link
                             to='/browse'
-                            className='py-2 px-6 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium'>
+                            className='py-2 px-4 sm:px-6 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium text-sm sm:text-base'>
                             Go to Homepage
                         </Link>
                     </div>
