@@ -1,7 +1,5 @@
 # Drone Rental Application - Monorepo
 
-A full-stack identity verification system consisting of a React SDK and a demo drone rental application.
-
 ## Project Overview
 
 This monorepo contains two packages:
@@ -76,22 +74,6 @@ cd packages/identity-verification-sdk
 npm run demo
 ```
 
-### Building for Production
-
-Build the SDK:
-
-```bash
-cd packages/identity-verification-sdk
-npm run build
-```
-
-Build the drone rental app:
-
-```bash
-cd packages/drone-rental-app
-npm run build
-```
-
 ## Package Documentation
 
 -   [Identity Verification SDK](./packages/identity-verification-sdk/README.md) - Complete API reference and SDK usage
@@ -145,14 +127,16 @@ cd packages/identity-verification-sdk
 npm test
 ```
 
-## Contributing
+## Considerations & comments
 
-When contributing to either package:
+If this was a real world project we could've added numerous necessary features
 
-1. Make changes in the appropriate package directory
-2. Ensure tests pass
-3. Update documentation as needed
-4. Build the package to verify no errors
+-   Persist form data in localStorage or IndexedDB to prevent loss on page refresh or accidental navigation.
+-   Add support for multiple languages using a library like react-i18next.
+-   Extract client (drone-rental-app) buttons, typography etc. into common folder
+-   Integrate caching for data like country lists, previous phone inputs, or other API responses using libraries like React Query or SWR.
+-   Put more accent on a11y, especially on the SDK side. Ensure all interactive elements are keyboard navigable and properly labeled.
+-   Provide a hook into validation for custom validation (country specific validation, state/region validation etc.)
 
 ## License
 

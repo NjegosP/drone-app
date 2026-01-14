@@ -4,10 +4,10 @@ A React SDK for identity verification with selfie capture, phone validation, and
 
 ## Features
 
-- **SelfieCapture**: Camera-based selfie capture component
-- **PhoneInput**: International phone number input with validation
-- **AddressForm**: Complete address collection with country selection
-- **getIdentityData**: API integration for identity verification
+-   **SelfieCapture**: Camera-based selfie capture component
+-   **PhoneInput**: International phone number input with validation
+-   **AddressForm**: Complete address collection with country selection
+-   **getIdentityData**: API integration for identity verification
 
 ## Installation
 
@@ -39,6 +39,18 @@ import {
 // Collect address
 <AddressForm onSubmit={(address) => console.log(address)} />
 
+
+// Use the whole configurable flow
+ <VerifyFlow
+    flowConfig={[
+        {module: 'selfie'},
+        {module: 'phone'},
+        {module: 'address'},
+    ]}
+    onComplete={handleComplete}
+    onError={handleError}
+/>
+
 // Verify identity
 const result = await getIdentityData({
   selfieUrl: '...',
@@ -54,45 +66,51 @@ const result = await getIdentityData({
 Component for capturing selfies using the device camera with built-in face detection and quality validation.
 
 **Props:**
-- `onCapture: (imageData: string) => void` - Callback fired when a valid selfie is captured. Receives base64 image data.
-- `onError?: (error: string | DOMException) => void` - Optional callback for handling errors (camera permissions, image processing failures).
-- `videoConstraints?: MediaTrackConstraints` - Optional webcam configuration (resolution, facing mode, etc.).
+
+-   `onCapture: (imageData: string) => void` - Callback fired when a valid selfie is captured. Receives base64 image data.
+-   `onError?: (error: string | DOMException) => void` - Optional callback for handling errors (camera permissions, image processing failures).
+-   `videoConstraints?: MediaTrackConstraints` - Optional webcam configuration (resolution, facing mode, etc.).
 
 **Features:**
-- Built-in face guide overlay
-- Image quality validation
-- Automatic error handling for camera permissions
-- Loading states during processing
-- Retake functionality
+
+-   Built-in face guide overlay
+-   Image quality validation
+-   Automatic error handling for camera permissions
+-   Loading states during processing
+-   Retake functionality
 
 ### PhoneInput
 
 International phone number input with validation.
 
 **Props:**
-- `onSubmit: (data: { phoneNumber: string }) => void` - Callback fired when a valid phone number is submitted.
+
+-   `onSubmit: (data: { phoneNumber: string }) => void` - Callback fired when a valid phone number is submitted.
 
 **Features:**
-- Country code selection with flags
-- Real-time validation using libphonenumber-js
-- Support for international formats
+
+-   Country code selection with flags
+-   Real-time validation using libphonenumber-js
+-   Support for international formats
 
 ### AddressForm
 
 Complete address collection form.
 
 **Props:**
-- `onSubmit: (address: Address) => void` - Callback fired when form is submitted with valid data.
-- `initialValues?: Partial<Address>` - Optional initial form values.
+
+-   `onSubmit: (address: Address) => void` - Callback fired when form is submitted with valid data.
+-   `initialValues?: Partial<Address>` - Optional initial form values.
 
 **Address Type:**
+
 ```tsx
 interface Address {
-  streetAddress: string;
-  city: string;
-  stateProvince: string;
-  country: string;
-  zipCode: string;
+    streetAddress: string;
+    city: string;
+    stateProvince: string;
+    country: string;
+    zipCode: string;
 }
 ```
 
@@ -101,24 +119,26 @@ interface Address {
 Utility function to submit verification data and receive identity verification results.
 
 **Parameters:**
+
 ```tsx
 {
-  selfieUrl: string;
-  phone: string;
-  address: Address;
+    selfieUrl: string;
+    phone: string;
+    address: Address;
 }
 ```
 
 **Returns:**
+
 ```tsx
-Promise<IdentityData>
+Promise<IdentityData>;
 
 interface IdentityData {
-  selfieUrl: string;
-  phone: string;
-  address: Address;
-  score: number;          // 0-100 verification confidence score
-  status: 'verified' | 'failed';
+    selfieUrl: string;
+    phone: string;
+    address: Address;
+    score: number; // 0-100 verification confidence score
+    status: 'verified' | 'failed';
 }
 ```
 
