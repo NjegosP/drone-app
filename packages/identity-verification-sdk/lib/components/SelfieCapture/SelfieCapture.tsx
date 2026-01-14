@@ -65,14 +65,7 @@ export const SelfieCapture: React.FC<SelfieCaptureProp> = ({
                     width='100%'
                     height='100%'
                     videoConstraints={videoConstraints}
-                    onUserMedia={(a) => {
-                        console.log(a);
-                        console.log('onUserMedia');
-                    }}
-                    onUserMediaError={(error) => {
-                        console.log('error');
-                        return onError && onError(error);
-                    }}
+                    onUserMediaError={onError}
                 />
                 {imageSrc ? (
                     <img
