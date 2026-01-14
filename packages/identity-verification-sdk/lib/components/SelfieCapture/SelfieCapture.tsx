@@ -2,7 +2,7 @@ import React from 'react';
 import Webcam from 'react-webcam';
 import type {SelfieCaptureProp} from '../../types';
 import {useSelfieCapture} from '../../hooks/useSelfieCapture';
-import {CaptureIcon, RetakeIcon} from 'lib/assets/icons';
+import {CaptureIcon, RetakeIcon} from '../../assets/icons';
 
 export const SelfieCapture: React.FC<SelfieCaptureProp> = ({
     onCapture,
@@ -49,7 +49,7 @@ export const SelfieCapture: React.FC<SelfieCaptureProp> = ({
                 )}
             </div>
             <button
-                className='rounded-full mt-2 bg-white w-10 h-10 flex items-center justify-center relative'
+                className='rounded-full mt-2 bg-white w-10 h-10 flex items-center justify-center relative border border-amber-200'
                 onClick={handleActionClick}>
                 {imageSrc ? <RetakeIcon /> : <CaptureIcon />}
             </button>

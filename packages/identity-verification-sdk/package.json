@@ -4,23 +4,27 @@
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/lib/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
+      "types": "./dist/lib/index.d.ts"
+    },
+    "./style.css": "./dist/index.css"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup lib/index.ts --format esm --dts --out-dir dist",
-    "dev": "tsup lib/index.ts --format esm --dts --out-dir dist --watch",
+    "build": "tsc && vite build",
+    "dev": "vite build --watch",
     "demo": "vite",
     "lint": "eslint .",
     "test": "vitest run"
   },
+  "sideEffects": [
+    "*.css"
+  ],
   "peerDependencies": {
     "react": "^18 || ^19",
     "react-dom": "^18 || ^19",
@@ -32,6 +36,7 @@
     "clsx": "^2.1.1",
     "country-flag-icons": "^1.6.4",
     "libphonenumber-js": "^1.12.33",
+    "vite-plugin-css-injected-by-js": "^3.5.2",
     "vite-plugin-svgr": "^4.5.0",
     "zod": "^4.3.5"
   },
