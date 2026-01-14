@@ -1,7 +1,8 @@
-import React, {Fragment, useRef, useState} from 'react';
+import CaptureIcon from '@/assets/capture.svg?react';
+import RetakeIcon from '@/assets/repeat.svg?react';
+import React, {useRef, useState} from 'react';
 import Webcam from 'react-webcam';
 import type {SelfieCaptureProp} from '../../types';
-import CaptureIcon from '../../../assets/capture.svg?react';
 
 export const SelfieCapture: React.FC<SelfieCaptureProp> = ({
     onCapture,
@@ -16,6 +17,7 @@ export const SelfieCapture: React.FC<SelfieCaptureProp> = ({
     // >('prompt');
 
     const handleCapture = () => {
+        console.log('capture');
         const imageSrc = webcamRef.current?.getScreenshot();
         if (imageSrc) {
             setImageSrc(imageSrc);
@@ -56,41 +58,44 @@ export const SelfieCapture: React.FC<SelfieCaptureProp> = ({
 
     return (
         <div className='flex flex-col items-center'>
-            <Webcam
-                className='rounded-xl border-gray-800 border-4'
-                ref={webcamRef}
-                width='100%'
-                height='100%'
-                videoConstraints={videoConstraints}
-                onUserMedia={(a) => {
-                    console.log(a);
-                    console.log('onUserMedia');
-                }}
-                // TO DO -- Do something about this
-                onUserMediaError={(error) => {
-                    console.log('error');
-                    return onError && onError(error);
-                }}
-            />
-            {imageSrc ? (
-                <img
-                    className='absolute top-0 left-0 rounded-xl border-gray-800 border-4'
-                    src={imageSrc}
+            <div className='relative'>
+                <Webcam
+                    className='rounded-xl border-gray-800'
+                    ref={webcamRef}
+                    width='100%'
+                    height='100%'
+                    videoConstraints={videoConstraints}
+                    onUserMedia={(a) => {
+                        console.log(a);
+                        console.log('onUserMedia');
+                    }}
+                    onUserMediaError={(error) => {
+                        console.log('error');
+                        return onError && onError(error);
+                    }}
                 />
-            ) : (
-                <FaceGuide />
-            )}
+                {imageSrc ? (
+                    <img
+                        className='absolute top-0 left-0 rounded-xl border-gray-800'
+                        src={imageSrc}
+                    />
+                ) : (
+                    <FaceGuide />
+                )}
+            </div>
             <button
-                className='w-[50%] bg-white border-0 px-3 py-3 rounded-xl text-cyan-950 flex items-center justify-center gap-2'
-                onClick={!imageSrc ? handleCapture : () => setImageSrc(null)}>
-                <CaptureIcon className='w-5 h-5' />
+                className='rounded-full bg-white w-10 h-10 flex items-center justify-center relative'
+                onClick={imageSrc ? () => setImageSrc(null) : handleCapture}>
+                {imageSrc ? (
+                    <RetakeIcon className='w-5 h-5' />
+                ) : (
+                    <CaptureIcon className='w-5 h-5' />
+                )}
             </button>
         </div>
     );
 };
 
 const FaceGuide = () => (
-    <div className='absolute top-0 left-0 rounded-xl w-full h-full'>
-        <div className='w-[40%] h-[60%] mt-12 mx-auto rounded-xl ' />
-    </div>
+    <div className='absolute top-[10%] left-[25%] rounded-xl w-[50%] h-[75%] border-2 border-gray-100' />
 );
