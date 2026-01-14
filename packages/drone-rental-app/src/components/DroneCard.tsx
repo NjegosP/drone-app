@@ -17,43 +17,21 @@ export const DroneCard = ({drone, onAddToCart}: DroneCardProps) => {
                 className='w-full h-40 sm:h-48 object-cover rounded-md'
             />
             <div>
-                <h3 className='text-base sm:text-lg font-semibold'>{drone.name}</h3>
+                <h3 className='text-base sm:text-lg font-semibold'>
+                    {drone.name}
+                </h3>
                 <p className='text-sm text-gray-600'>${drone.dailyPrice}/day</p>
             </div>
-            <div className='text-sm space-y-1'>
-                {drone.category === 'filming' ? (
-                    <>
-                        <p>
-                            <span className='font-medium'>Camera:</span>{' '}
-                            {drone.specs.camera}
-                        </p>
-                        <p>
-                            <span className='font-medium'>Flight Time:</span>{' '}
-                            {drone.specs.flightTime}
-                        </p>
-                        <p>
-                            <span className='font-medium'>Max Speed:</span>{' '}
-                            {drone.specs.maxSpeed}
-                        </p>
-                    </>
-                ) : (
-                    <>
-                        <p>
-                            <span className='font-medium'>Load Capacity:</span>{' '}
-                            {drone.specs.loadCapacity}
-                        </p>
-                        <p>
-                            <span className='font-medium'>Flight Time:</span>{' '}
-                            {drone.specs.flightTime}
-                        </p>
-                        <p>
-                            <span className='font-medium'>Range:</span>{' '}
-                            {drone.specs.range}
-                        </p>
-                    </>
-                )}
+            <div className='text-sm space-y-2'>
+                {drone.specs.map((spec) => (
+                    <InfoRow
+                        key={spec.label}
+                        label={spec.label}
+                        value={spec.value}
+                    />
+                ))}
             </div>
-            <div className='flex gap-2 items-center mt-auto flex-wrap sm:flex-nowrap'>
+            <div className='flex gap-2 justify-around items-center mt-auto py-2 flex-wrap sm:flex-nowrap'>
                 <div className='flex gap-2 items-center'>
                     <input
                         type='number'
@@ -69,10 +47,16 @@ export const DroneCard = ({drone, onAddToCart}: DroneCardProps) => {
                 </div>
                 <button
                     onClick={() => onAddToCart(drone, days)}
-                    className='w-full sm:w-auto sm:ml-auto px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors text-sm font-medium'>
+                    className='w-[50%] sm:w-auto sm:ml-auto px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors text-sm font-medium'>
                     Add to Cart
                 </button>
             </div>
         </div>
     );
 };
+
+const InfoRow = ({label, value}: {label: string; value: string}) => (
+    <p className='py-0.5'>
+        <span className='font-medium'>{label}:</span> {value}
+    </p>
+);

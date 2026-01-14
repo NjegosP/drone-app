@@ -2,33 +2,19 @@ import type {Address, IdentityData} from 'identity-verification-sdk';
 
 export type DroneCategory = 'filming' | 'cargo';
 
-export type FilmingDrone = {
-    id: string;
-    name: string;
-    category: 'filming';
-    dailyPrice: number;
-    image: string;
-    specs: {
-        camera: string;
-        flightTime: string;
-        maxSpeed: string;
-    };
+export type Spec = {
+    label: string;
+    value: string;
 };
 
-export type CargoDrone = {
+export type Drone = {
     id: string;
     name: string;
-    category: 'cargo';
+    category: DroneCategory;
     dailyPrice: number;
     image: string;
-    specs: {
-        loadCapacity: string;
-        flightTime: string;
-        range: string;
-    };
+    specs: Spec[];
 };
-
-export type Drone = FilmingDrone | CargoDrone;
 
 export type CartItem = {
     drone: Drone;

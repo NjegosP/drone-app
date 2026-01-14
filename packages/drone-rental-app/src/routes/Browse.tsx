@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import {Header} from '../components/Header';
 import {DroneCard} from '../components/DroneCard';
 import {Cart} from '../components/Cart';
 import {drones} from '../data/drones';
@@ -20,10 +19,7 @@ export const Browse = () => {
     };
 
     return (
-        <div className='min-h-screen bg-white'>
-            <Header subtitle='Premium drone rentals for filming and cargo' />
-
-            <div className='max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 md:py-8'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 md:py-8'>
                 <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8'>
                     <div className='lg:col-span-2'>
                         <div className='mb-4 sm:mb-6'>
@@ -62,10 +58,9 @@ export const Browse = () => {
                         </div>
                     </div>
 
-                    <div className='hidden lg:block lg:col-span-1'>
-                        <div className='sticky top-24'>
-                            <Cart />
-                        </div>
+                <div className='hidden lg:block lg:col-span-1'>
+                    <div className='sticky top-24'>
+                        <Cart />
                     </div>
                 </div>
             </div>

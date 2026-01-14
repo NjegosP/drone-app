@@ -1,25 +1,15 @@
-import {Link, redirect} from 'react-router';
-import {Header} from '../components/Header';
+import {Link} from 'react-router';
 import {useStore} from '../store/useStore';
-
-export const resultLoader = () => {
-    const {verificationData} = useStore.getState();
-    if (!verificationData) {
-        return redirect('/browse');
-    }
-    return null;
-};
 
 export const Result = () => {
     const {verificationData, resetVerification} = useStore();
 
-    const isVerified = verificationData.status === 'verified';
+    const isVerified = verificationData?.status === 'verified';
+
+    if (!verificationData) return null;
 
     return (
-        <div className='min-h-screen bg-white'>
-            <Header title='Verification Result' />
-
-            <div className='max-w-3xl mx-auto px-4 sm:px-6 py-4 sm:py-6 md:py-8'>
+        <div className='max-w-3xl mx-auto px-4 sm:px-6 py-4 sm:py-6 md:py-8'>
                 <div className='border border-amber-200 rounded-lg p-4 sm:p-6'>
                     <div className='text-center mb-4 sm:mb-6'>
                         <div
@@ -121,7 +111,7 @@ export const Result = () => {
                                     Retry Verification
                                 </Link>
                                 <Link
-                                    to='/browse'
+                                    to='/'
                                     onClick={resetVerification}
                                     className='flex-1 py-2 border border-amber-200 rounded-md hover:bg-gray-50 transition-colors font-medium text-center text-sm sm:text-base'>
                                     Cancel
@@ -129,7 +119,6 @@ export const Result = () => {
                             </>
                         )}
                     </div>
-                </div>
             </div>
         </div>
     );

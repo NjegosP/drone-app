@@ -1,9 +1,9 @@
-import {createBrowserRouter, RouterProvider, redirect} from 'react-router';
+import {createBrowserRouter, redirect, RouterProvider} from 'react-router';
 import {Layout} from './components/Layout';
 import {ErrorPage} from './pages/ErrorPage';
 import {Browse} from './routes/Browse';
-import {Checkout, checkoutLoader} from './routes/Checkout';
-import {Result, resultLoader} from './routes/Result';
+import {Checkout} from './routes/Checkout';
+import {Result} from './routes/Result';
 import {Verify} from './routes/Verify';
 
 const router = createBrowserRouter([
@@ -23,12 +23,10 @@ const router = createBrowserRouter([
             {
                 path: 'result',
                 element: <Result />,
-                loader: resultLoader,
             },
             {
                 path: 'checkout',
                 element: <Checkout />,
-                loader: checkoutLoader,
             },
             {
                 path: '*',

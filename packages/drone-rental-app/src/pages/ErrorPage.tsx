@@ -54,7 +54,7 @@ export const ErrorPage = () => {
 
                     <div className='flex gap-4 justify-center'>
                         <Link
-                            to='/browse'
+                            to='/'
                             className='py-2 px-4 sm:px-6 bg-amber-400 text-black rounded-md hover:bg-amber-500 transition-colors font-medium text-sm sm:text-base'>
                             Go to Homepage
                         </Link>

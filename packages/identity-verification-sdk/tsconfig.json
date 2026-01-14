@@ -16,5 +16,5 @@
         },
         "types": ["vitest/globals", "@testing-library/jest-dom"]
     },
-    "include": ["lib/**/*", "vite-env.d.ts"]
+    "include": ["lib/**/*", "src/**/*", "vite-env.d.ts", "vite.config.ts", "vitest.setup.ts"]
 }
