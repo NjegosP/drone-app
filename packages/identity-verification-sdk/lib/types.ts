@@ -17,6 +17,7 @@ export interface IdentityData {
 export interface SelfieCaptureProp {
     onCapture: (imageData: string) => void;
     onError?: (error: string | DOMException) => void;
+    videoConstraints?: boolean | MediaTrackConstraints | undefined;
 }
 
 export interface PhoneInputProps {

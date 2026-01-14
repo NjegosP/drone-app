@@ -53,8 +53,8 @@ export const AddressForm = ({
                         id='streetAddress-error'
                     />
                 </InputWrapper>
-                <div className='flex gap-2'>
-                    <InputWrapper className='w-full'>
+                <div className='flex gap-2 flex-col md:flex-row'>
+                    <InputWrapper className='w-full md:w-1/2'>
                         <Label htmlFor='city' error={!!errors.city}>
                             City *
                         </Label>
@@ -73,7 +73,7 @@ export const AddressForm = ({
                         />
                         <ValidationError error={errors.city} id='city-error' />
                     </InputWrapper>
-                    <InputWrapper className='w-full'>
+                    <InputWrapper className='w-full md:w-1/2'>
                         <Label
                             htmlFor='stateProvince'
                             error={!!errors.stateProvince}>
@@ -100,8 +100,8 @@ export const AddressForm = ({
                         />
                     </InputWrapper>
                 </div>
-                <div className='flex gap-2'>
-                    <InputWrapper className='w-full'>
+                <div className='flex gap-2 flex-col md:flex-row'>
+                    <InputWrapper className='w-full md:w-1/2'>
                         <Label htmlFor='country' error={!!errors.country}>
                             Country *
                         </Label>
@@ -121,7 +121,7 @@ export const AddressForm = ({
                             id='country-error'
                         />
                     </InputWrapper>
-                    <InputWrapper className='w-full'>
+                    <InputWrapper className='w-full md:w-1/2'>
                         <Label htmlFor='zipCode' error={!!errors.zipCode}>
                             Zip Code *
                         </Label>

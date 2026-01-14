@@ -1,10 +1,12 @@
 import React, {Fragment, useRef, useState} from 'react';
 import Webcam from 'react-webcam';
 import type {SelfieCaptureProp} from '../../types';
+import CaptureIcon from '../../../assets/capture.svg?react';
 
 export const SelfieCapture: React.FC<SelfieCaptureProp> = ({
     onCapture,
     onError,
+    videoConstraints,
 }) => {
     const webcamRef = useRef<Webcam>(null);
     const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -53,48 +55,42 @@ export const SelfieCapture: React.FC<SelfieCaptureProp> = ({
     // }
 
     return (
-        <Fragment>
-            <div className='relative'>
-                <Webcam
-                    className='rounded-2xl border-gray-800 border-4'
-                    ref={webcamRef}
-                    width='100%'
-                    height='100%'
-                    videoConstraints={{width: 640, height: 480}}
-                    onUserMedia={(a) => {
-                        console.log(a);
-                        console.log('onUserMedia');
-                    }}
-                    // TO DO -- Do something about this
-                    onUserMediaError={(error) => {
-                        console.log('error');
-                        return onError && onError(error);
-                    }}
+        <div className='flex flex-col items-center'>
+            <Webcam
+                className='rounded-xl border-gray-800 border-4'
+                ref={webcamRef}
+                width='100%'
+                height='100%'
+                videoConstraints={videoConstraints}
+                onUserMedia={(a) => {
+                    console.log(a);
+                    console.log('onUserMedia');
+                }}
+                // TO DO -- Do something about this
+                onUserMediaError={(error) => {
+                    console.log('error');
+                    return onError && onError(error);
+                }}
+            />
+            {imageSrc ? (
+                <img
+                    className='absolute top-0 left-0 rounded-xl border-gray-800 border-4'
+                    src={imageSrc}
                 />
-                {imageSrc ? (
-                    <img
-                        className='absolute top-0 left-0 w-full h-full'
-                        src={imageSrc}
-                    />
-                ) : (
-                    <FaceGuide />
-                )}
-            </div>
-            <div className='flex row p-4 justify-center gap-4'>
-                <button onClick={handleCapture}>Capture photo</button>
-                {imageSrc && (
-                    <button
-                        onClick={() => {
-                            setImageSrc(null);
-                        }}>
-                        Retake photo
-                    </button>
-                )}
-            </div>
-        </Fragment>
+            ) : (
+                <FaceGuide />
+            )}
+            <button
+                className='w-[50%] bg-white border-0 px-3 py-3 rounded-xl text-cyan-950 flex items-center justify-center gap-2'
+                onClick={!imageSrc ? handleCapture : () => setImageSrc(null)}>
+                <CaptureIcon className='w-5 h-5' />
+            </button>
+        </div>
     );
 };
 
 const FaceGuide = () => (
-    <div className='absolute w-1/2 h-3/4 bottom-1/8 left-1/4 border-4 border-dashed' />
+    <div className='absolute top-0 left-0 rounded-xl w-full h-full'>
+        <div className='w-[40%] h-[60%] mt-12 mx-auto rounded-xl ' />
+    </div>
 );
