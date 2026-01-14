@@ -131,11 +131,11 @@ function App() {
                     </button>
                 </div>
 
-                <div className='w-full flex flex-row'>
-                    <div className='h-[500px] w-[280px]'>
+                <div className='w-full flex flex-row border-2 border-amber-400'>
+                    {/* <div className='h-[500px] w-[280px]'>
                         <h2>Step 1: Capture Selfie</h2>
                         <SelfieCapture onCapture={handleSelfieCapture} />
-                    </div>
+                    </div> */}
                     {/* <div>
                         <h2>Step 1: Capture Selfie</h2>
                         <SelfieCapture onCapture={handleSelfieCapture} />
@@ -144,15 +144,15 @@ function App() {
                         <h2>Step 1: Capture Selfie</h2>
                         <SelfieCapture onCapture={handleSelfieCapture} />
                     </div> */}
-                </div>
-
-                {/* 
-                {currentStep === 'phone' && (
                     <div>
                         <h2>Step 2: Enter Phone Number</h2>
                         <PhoneInput onSubmit={handlePhoneSubmit} />
                     </div>
-                )}
+                </div>
+
+                {/* 
+
+                   
 
                 {currentStep === 'address' && (
                     <div>

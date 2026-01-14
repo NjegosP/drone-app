@@ -1,15 +1,16 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from 'react-hook-form';
 import {getCountryData} from '../../data/countries';
-import {Input} from '../components/Input';
-import {Select} from '../components/Select';
+import {Select, Input} from '../../common';
 import {phoneInputSchema} from './schema';
 import type {NormalizedPhoneNumber} from './types';
 
 export const PhoneInput = ({
     onSubmit,
+    submitButtonRef,
 }: {
     onSubmit: (data: NormalizedPhoneNumber) => void;
+    submitButtonRef?: React.RefObject<HTMLButtonElement | null>;
 }) => {
     const {
         register,
@@ -44,7 +45,11 @@ export const PhoneInput = ({
                     maxLength={15}
                     error={!!errors?.phoneNumber}
                 />
-                <button type='submit' aria-label='Submit'>
+                <button
+                    ref={submitButtonRef}
+                    type='submit'
+                    className='sr-only'
+                    aria-label='Submit'>
                     Submit
                 </button>
             </div>

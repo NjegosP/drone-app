@@ -1,4 +1,3 @@
-// TO DO - Research clsx a bit
 import clsx from 'clsx';
 import {forwardRef} from 'react';
 import {basicInputStyles} from './util';

@@ -4,14 +4,16 @@ import type React from 'react';
 import type {ReactNode} from 'react';
 import {useForm} from 'react-hook-form';
 import {getCountryData} from '../../data/countries';
-import {Input, Label, Select, ValidationError} from '../components';
+import {Input, Label, Select, ValidationError} from '../../common';
 import {addressFormSchema} from './schema';
 import type {AddressFormType} from './types';
 
 export const AddressForm = ({
     onSubmit,
+    submitButtonRef,
 }: {
     onSubmit: (data: AddressFormType) => void;
+    submitButtonRef?: React.RefObject<HTMLButtonElement | null>;
 }) => {
     const {
         register,
@@ -145,7 +147,7 @@ export const AddressForm = ({
                     </InputWrapper>
                 </div>
             </div>
-            <button className='mt-4' type='submit'>
+            <button ref={submitButtonRef} className='sr-only' type='submit'>
                 Submit
             </button>
         </form>
