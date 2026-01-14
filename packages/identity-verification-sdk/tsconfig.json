@@ -9,7 +9,11 @@
         "outDir": "dist",
         "strict": true,
         "skipLibCheck": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/assets/*": ["assets/*"]
+        }
     },
-    "include": ["lib/**/*"]
+    "include": ["lib/**/*", "vite-env.d.ts"]
 }
