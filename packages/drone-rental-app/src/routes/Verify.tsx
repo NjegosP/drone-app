@@ -24,7 +24,15 @@ export const Verify = () => {
             />
             <div className='max-w-3xl mx-auto px-4 sm:px-6 py-4 sm:py-6 md:py-8 w-full'>
                 <div className='border border-amber-200 rounded-lg p-4 sm:p-6 m-auto w-full'>
-                    <VerifyFlow flowConfig={[{module: 'selfie'}, {module: 'phone'}, {module: 'address'}]} onComplete={handleComplete} onError={handleError} />
+                    <VerifyFlow
+                        flowConfig={[
+                            {module: 'selfie'},
+                            {module: 'phone'},
+                            {module: 'address'},
+                        ]}
+                        onComplete={handleComplete}
+                        onError={handleError}
+                    />
                 </div>
             </div>
         </div>

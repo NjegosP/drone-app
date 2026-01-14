@@ -8,6 +8,7 @@ import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 export default defineConfig({
     plugins: [react(), tailwindcss(), svgr(), cssInjectedByJsPlugin()],
     build: {
+        emptyOutDir: false,
         lib: {
             entry: 'lib/index.ts',
             name: 'IdentityVerificationSDK',

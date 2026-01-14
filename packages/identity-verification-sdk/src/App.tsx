@@ -1,11 +1,5 @@
 import {useState} from 'react';
-import {
-    AddressForm,
-    PhoneInput,
-    SelfieCapture,
-    getIdentityData,
-    type Address,
-} from '../lib';
+import {PhoneInput, getIdentityData, type Address} from '../lib';
 import './App.css';
 
 type Step = 'selfie' | 'phone' | 'address' | 'result';

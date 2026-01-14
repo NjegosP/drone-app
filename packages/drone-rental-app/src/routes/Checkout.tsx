@@ -5,7 +5,7 @@ import {useStore} from '../store/useStore';
 
 export const checkoutLoader = () => {
     const {cart, verificationData} = useStore.getState();
-    if (!verificationData || cart.length === 0) {
+    if (!verificationData || verificationData.status !== 'verified' || cart.length === 0) {
         return redirect('/browse');
     }
     return null;
