@@ -20,13 +20,17 @@ export const Header = ({title = 'SkyRent Drones', subtitle}: HeaderProps) => {
             <div className='max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4'>
                 <div className='flex items-center justify-between'>
                     <Link to='/' className='cursor-pointer'>
-                        <h1 className='text-lg sm:text-xl md:text-2xl font-bold'>{title}</h1>
+                        <h1 className='text-lg sm:text-xl md:text-2xl font-bold'>
+                            {title}
+                        </h1>
                         {subtitle && (
-                            <p className='text-xs sm:text-sm text-gray-600 hidden sm:block'>{subtitle}</p>
+                            <p className='text-xs sm:text-sm text-gray-600 hidden sm:block'>
+                                {subtitle}
+                            </p>
                         )}
                     </Link>
 
-                    <div className='lg:hidden relative' ref={dropdownRef}>
+                    <div className='relative' ref={dropdownRef}>
                         <button
                             onClick={() => setIsCartOpen(!isCartOpen)}
                             className='relative p-2 hover:bg-gray-100 rounded-lg transition-colors'>
