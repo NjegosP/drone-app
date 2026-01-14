@@ -4,7 +4,7 @@ import {ErrorPage} from './pages/ErrorPage';
 import {Browse} from './routes/Browse';
 import {Checkout, checkoutLoader} from './routes/Checkout';
 import {Result, resultLoader} from './routes/Result';
-import {Verify, verifyAction} from './routes/Verify';
+import {Verify} from './routes/Verify';
 
 const router = createBrowserRouter([
     {
@@ -19,7 +19,6 @@ const router = createBrowserRouter([
             {
                 path: 'verify',
                 element: <Verify />,
-                action: verifyAction,
             },
             {
                 path: 'result',
