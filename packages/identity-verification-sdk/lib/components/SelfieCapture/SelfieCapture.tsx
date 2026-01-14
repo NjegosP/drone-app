@@ -3,6 +3,7 @@ import RetakeIcon from '@/assets/repeat.svg?react';
 import React, {useRef, useState} from 'react';
 import Webcam from 'react-webcam';
 import type {SelfieCaptureProp} from '../../types';
+import {analyzeImageQuality} from '../../services/imageProcessingService';
 
 export const SelfieCapture: React.FC<SelfieCaptureProp> = ({
     onCapture,
@@ -11,74 +12,97 @@ export const SelfieCapture: React.FC<SelfieCaptureProp> = ({
 }) => {
     const webcamRef = useRef<Webcam>(null);
     const [imageSrc, setImageSrc] = useState<string | null>(null);
+    const [hasError, setHasError] = useState(false);
+    const [isImageProcessing, setIsImageProcessing] = useState(false);
+    const [processingError, setProcessingError] = useState(false);
 
-    // const [permissionStatus, setPermissionStatus] = useState<
-    //     PermissionState | 'error'
-    // >('prompt');
-
-    const handleCapture = () => {
-        console.log('capture');
+    const handleCapture = async () => {
         const imageSrc = webcamRef.current?.getScreenshot();
-        if (imageSrc) {
-            setImageSrc(imageSrc);
-            onCapture(imageSrc ?? '');
-        }
+
+        if (!imageSrc) return;
+
+        setImageSrc(imageSrc);
+        setIsImageProcessing(true);
+        setProcessingError(false);
+
+        analyzeImageQuality(imageSrc)
+            .then(({isGoodQuality, image}) => {
+                if (isGoodQuality) {
+                    onCapture(image);
+                } else {
+                    setProcessingError(true);
+                }
+            })
+            .finally(() => setIsImageProcessing(false));
     };
 
-    // TO DO -- Check if I need this permission status handling
-    // TO DO -- I should probably extract this into a custom hook
-    // TO DO -- See if better to use vanilla JS approach, not the library
-    // useEffect(() => {
-    //     const checkCameraPermission = async () => {
-    //         try {
-    //             const permissionObj = await navigator.permissions.query({
-    //                 name: 'camera',
-    //             });
+    const handleActionClick = () => {
+        if (imageSrc) {
+            setImageSrc(null);
+            setProcessingError(false);
+            return;
+        }
 
-    //             setPermissionStatus(permissionObj.state); // 'granted', 'denied', or 'prompt'
+        handleCapture();
+    };
 
-    //             permissionObj.onchange = () => {
-    //                 setPermissionStatus(permissionObj.state);
-    //             };
-    //         } catch (error) {
-    //             console.error('Error checking camera permission:', error);
-    //             setPermissionStatus('error');
-    //         }
-    //     };
-    //     checkCameraPermission();
-    // }, []);
-
-    // if (permissionStatus === 'prompt') {
-    //     return <p>Loading...</p>;
-    // }
-
-    // if (permissionStatus === 'error' || permissionStatus === 'denied') {
-    //     return <p>Denied!</p>;
-    // }
+    if (hasError) {
+        return (
+            <div className='flex flex-col items-center'>
+                <div className='relative'>
+                    <div className='rounded-xl border-gray-800 w-full h-full flex items-center justify-center bg-gray-100 p-8 text-center'>
+                        <p className='text-gray-700'>
+                            Camera access was denied. Please allow camera
+                            permissions to take a selfie.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className='flex flex-col items-center'>
-            <div className='relative'>
+            <div className='relative min-w-fit'>
                 <Webcam
                     className='rounded-xl border-gray-800'
                     ref={webcamRef}
-                    width='100%'
-                    height='100%'
+                    audio={false}
+                    screenshotFormat='image/jpeg'
+                    mirrored
                     videoConstraints={videoConstraints}
-                    onUserMediaError={onError}
+                    onUserMediaError={(error) => {
+                        console.error('Camera error:', error);
+                        setHasError(true);
+                        return onError && onError(error);
+                    }}
                 />
                 {imageSrc ? (
-                    <img
-                        className='absolute top-0 left-0 rounded-xl border-gray-800'
-                        src={imageSrc}
-                    />
+                    <>
+                        <img
+                            className='absolute top-0 left-0 rounded-xl border-gray-800'
+                            src={imageSrc}
+                        />
+                        {isImageProcessing && (
+                            <div className='absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-xl'>
+                                <div className='w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin' />
+                            </div>
+                        )}
+                        {processingError && (
+                            <div className='absolute bottom-0 left-0 right-0'>
+                                <p className='text-red-600 text-sm text-center py-2'>
+                                    ⚠️ Image quality check failed. Please retake.
+                                </p>
+                            </div>
+                        )}
+                    </>
                 ) : (
                     <FaceGuide />
                 )}
             </div>
             <button
-                className='rounded-full bg-white w-10 h-10 flex items-center justify-center relative'
-                onClick={imageSrc ? () => setImageSrc(null) : handleCapture}>
+                className='rounded-full mt-2 bg-white w-10 h-10 flex items-center justify-center relative'
+                onClick={handleActionClick}>
                 {imageSrc ? (
                     <RetakeIcon className='w-5 h-5' />
                 ) : (
