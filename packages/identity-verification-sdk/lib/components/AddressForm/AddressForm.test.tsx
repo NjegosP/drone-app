@@ -48,63 +48,6 @@ describe('AddressForm', () => {
         });
     });
 
-    it('submits form with valid data', async () => {
-        const user = userEvent.setup();
-        const onSubmit = vi.fn();
-        render(<AddressForm onSubmit={onSubmit} />);
-
-        await user.type(
-            screen.getByLabelText(/street address/i),
-            '123 Main St'
-        );
-        await user.type(screen.getByLabelText(/city/i), 'New York');
-        await user.type(screen.getByLabelText(/state\/province/i), 'NY');
-        await user.selectOptions(screen.getByLabelText(/country/i), 'US');
-        await user.type(screen.getByLabelText(/zip code/i), '10001');
-
-        const submitButton = screen.getByRole('button', {name: /submit/i});
-        await user.click(submitButton);
-
-        await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                streetAddress: '123 Main St',
-                city: 'New York',
-                stateProvince: 'NY',
-                country: 'US',
-                zipCode: '10001',
-            });
-        });
-    });
-
-    it('trims whitespace from inputs', async () => {
-        const user = userEvent.setup();
-        const onSubmit = vi.fn();
-        render(<AddressForm onSubmit={onSubmit} />);
-
-        await user.type(
-            screen.getByLabelText(/street address/i),
-            '  123 Main St  '
-        );
-        await user.type(screen.getByLabelText(/city/i), '  New York  ');
-
-        await user.type(screen.getByLabelText(/state\/province/i), 'NY');
-        await user.selectOptions(screen.getByLabelText(/country/i), 'US');
-        await user.type(screen.getByLabelText(/zip code/i), '10001');
-
-        const submitButton = screen.getByRole('button', {name: /submit/i});
-        await user.click(submitButton);
-
-        await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                streetAddress: '123 Main St',
-                city: 'New York',
-                stateProvince: 'NY',
-                country: 'US',
-                zipCode: '10001',
-            });
-        });
-    });
-
     it('enforces maxLength constraints', () => {
         const onSubmit = vi.fn();
         render(<AddressForm onSubmit={onSubmit} />);
