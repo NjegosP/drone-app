@@ -28,8 +28,8 @@ drone-app/
 
 ### Prerequisites
 
-- Node.js 18+
-- npm
+-   Node.js 18+
+-   npm
 
 ### Installation
 
@@ -39,7 +39,11 @@ Install dependencies for all packages:
 npm install
 ```
 
-This will install dependencies for both the SDK and the demo app.
+Build the SDK
+
+```bash
+npm run build -w identity-verification-sdk
+```
 
 ### Development Workflow
 
@@ -90,47 +94,47 @@ npm run build
 
 ## Package Documentation
 
-- [Identity Verification SDK](./packages/identity-verification-sdk/README.md) - Complete API reference and SDK usage
-- [Drone Rental App](./packages/drone-rental-app/README.md) - Demo application documentation
+-   [Identity Verification SDK](./packages/identity-verification-sdk/README.md) - Complete API reference and SDK usage
+-   [Drone Rental App](./packages/drone-rental-app/README.md) - Demo application documentation
 
 ## Features
 
 ### Identity Verification SDK
 
-- Selfie capture with face detection and quality validation
-- International phone number input with validation
-- Address collection form with country support
-- TypeScript support with full type definitions
-- Tailwind CSS styling
-- Error handling and loading states
+-   Selfie capture with face detection and quality validation
+-   International phone number input with validation
+-   Address collection form with country support
+-   TypeScript support with full type definitions
+-   Tailwind CSS styling
+-   Error handling and loading states
 
 ### Drone Rental Demo App
 
-- Browse and select drones from catalog
-- Shopping cart functionality
-- Complete identity verification flow
-- Verification results with scoring
-- Checkout process with verified identity
+-   Browse and select drones from catalog
+-   Shopping cart functionality
+-   Complete identity verification flow
+-   Verification results with scoring
+-   Checkout process with verified identity
 
 ## Tech Stack
 
-- **React 19** - UI framework
-- **TypeScript** - Type safety
-- **Tailwind CSS 4** - Styling
-- **Vite** - Build tool and dev server
-- **tsup** - TypeScript library bundler (SDK)
-- **Zustand** - State management (demo app)
-- **react-hook-form** - Form management
-- **Zod** - Schema validation
+-   **React 19** - UI framework
+-   **TypeScript** - Type safety
+-   **Tailwind CSS 4** - Styling
+-   **Vite** - Build tool and dev server
+-   **tsup** - TypeScript library bundler (SDK)
+-   **Zustand** - State management (demo app)
+-   **react-hook-form** - Form management
+-   **Zod** - Schema validation
 
 ## Workspace Structure
 
 This project uses npm workspaces for monorepo management. The workspace configuration allows:
 
-- Shared dependencies across packages
-- Local package linking (drone-rental-app uses the local SDK)
-- Unified dependency installation
-- Independent versioning per package
+-   Shared dependencies across packages
+-   Local package linking (drone-rental-app uses the local SDK)
+-   Unified dependency installation
+-   Independent versioning per package
 
 ## Testing
 
