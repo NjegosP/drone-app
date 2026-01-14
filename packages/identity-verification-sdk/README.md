@@ -26,8 +26,12 @@ import {
   type Address,
 } from 'identity-verification-sdk';
 
-// Capture selfie
-<SelfieCapture onCapture={(imageData) => console.log(imageData)} />
+// Capture selfie with error handling
+<SelfieCapture
+  onCapture={(imageData) => console.log(imageData)}
+  onError={(error) => console.error(error)}
+  videoConstraints={{ width: 1280, height: 720, facingMode: 'user' }}
+/>
 
 // Collect phone number
 <PhoneInput onSubmit={(data) => console.log(data.phoneNumber)} />
@@ -41,6 +45,81 @@ const result = await getIdentityData({
   phone: '+1234567890',
   address: { ... }
 });
+```
+
+## API Reference
+
+### SelfieCapture
+
+Component for capturing selfies using the device camera with built-in face detection and quality validation.
+
+**Props:**
+- `onCapture: (imageData: string) => void` - Callback fired when a valid selfie is captured. Receives base64 image data.
+- `onError?: (error: string | DOMException) => void` - Optional callback for handling errors (camera permissions, image processing failures).
+- `videoConstraints?: MediaTrackConstraints` - Optional webcam configuration (resolution, facing mode, etc.).
+
+**Features:**
+- Built-in face guide overlay
+- Image quality validation
+- Automatic error handling for camera permissions
+- Loading states during processing
+- Retake functionality
+
+### PhoneInput
+
+International phone number input with validation.
+
+**Props:**
+- `onSubmit: (data: { phoneNumber: string }) => void` - Callback fired when a valid phone number is submitted.
+
+**Features:**
+- Country code selection with flags
+- Real-time validation using libphonenumber-js
+- Support for international formats
+
+### AddressForm
+
+Complete address collection form.
+
+**Props:**
+- `onSubmit: (address: Address) => void` - Callback fired when form is submitted with valid data.
+- `initialValues?: Partial<Address>` - Optional initial form values.
+
+**Address Type:**
+```tsx
+interface Address {
+  streetAddress: string;
+  city: string;
+  stateProvince: string;
+  country: string;
+  zipCode: string;
+}
+```
+
+### getIdentityData
+
+Utility function to submit verification data and receive identity verification results.
+
+**Parameters:**
+```tsx
+{
+  selfieUrl: string;
+  phone: string;
+  address: Address;
+}
+```
+
+**Returns:**
+```tsx
+Promise<IdentityData>
+
+interface IdentityData {
+  selfieUrl: string;
+  phone: string;
+  address: Address;
+  score: number;          // 0-100 verification confidence score
+  status: 'verified' | 'failed';
+}
 ```
 
 ## Development
