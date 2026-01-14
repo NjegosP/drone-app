@@ -25,12 +25,16 @@ export const PhoneInput = ({
 
     return (
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
-            <div className='flex gap-2'>
-                <Select {...register('countryCode')} id='countryCode'>
+            <div className='flex gap-2 w-full max-w-md'>
+                <Select
+                    className='flex-1 text-lg'
+                    {...register('countryCode')}
+                    id='countryCode'>
                     <Options />
                 </Select>
                 <Input
                     {...register('phoneNumber')}
+                    className='flex-2 px-2'
                     id='phoneNumber'
                     type='tel'
                     inputMode='tel'
@@ -38,11 +42,12 @@ export const PhoneInput = ({
                     aria-label='Phone number'
                     pattern='[0-9]*'
                     maxLength={15}
+                    error={!!errors?.phoneNumber}
                 />
+                <button type='submit' aria-label='Submit'>
+                    Submit
+                </button>
             </div>
-            <button type='submit' className='sr-only' aria-label='Submit'>
-                Submit
-            </button>
         </form>
     );
 };
